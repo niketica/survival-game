@@ -31,6 +31,7 @@ public class LevelManager implements PanelComponent {
         solidTileTypes = new ArrayList<>();
         solidTileTypes.add(TileType.WALL);
         solidTileTypes.add(TileType.WATER);
+        solidTileTypes.add(TileType.TREE);
     }
 
     @Override
