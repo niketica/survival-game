@@ -117,12 +117,12 @@ public class Player implements GameObject, PanelComponent {
 
     @Override
     public void activatePanelComponent() {
-        this.activate();
+        activate();
     }
 
     @Override
     public void deactivatePanelComponent() {
-        this.deactivate();
+        deactivate();
     }
 
     public void setDirection(Direction direction) {

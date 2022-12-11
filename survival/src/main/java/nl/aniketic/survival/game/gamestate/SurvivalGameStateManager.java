@@ -5,6 +5,7 @@ import nl.aniketic.survival.engine.gamestate.GameStateManager;
 import nl.aniketic.survival.game.common.Direction;
 import nl.aniketic.survival.game.controls.Key;
 import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
+import nl.aniketic.survival.game.entity.KeyObject;
 import nl.aniketic.survival.game.entity.Player;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.MapLoader;
@@ -17,6 +18,7 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     private Player player;
     private LevelManager levelManager;
+    private KeyObject key;
 
     @Override
     protected void startGameState() {
@@ -27,6 +29,7 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     private void startNewGame() {
         loadLevel();
+        loadKey();
         loadPlayer();
     }
 
@@ -39,17 +42,24 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     private void loadPlayer() {
         player = new Player();
-        player.activatePanelComponent();
+        player.activate();
         gameObjects.add(player);
 
         Node node = levelManager.getNode(23, 19);
         player.setPosition(node);
     }
 
+    private void loadKey() {
+        key = new KeyObject();
+        Node node = levelManager.getNode(24, 14);
+        key.setPosition(node);
+        key.activate();
+    }
+
     @Override
     protected void updatePreGameState() {
         updatePlayer();
-        updateLevel();
+        updatePlayerOffset();
     }
 
     private void updatePlayer() {
@@ -113,9 +123,11 @@ public class SurvivalGameStateManager extends GameStateManager {
         return false;
     }
 
-    private void updateLevel() {
+    private void updatePlayerOffset() {
         levelManager.setOffsetX(player.getWorldX());
         levelManager.setOffsetY(player.getWorldY());
+        key.setOffsetX(player.getWorldX());
+        key.setOffsetY(player.getWorldY());
     }
 
     @Override
