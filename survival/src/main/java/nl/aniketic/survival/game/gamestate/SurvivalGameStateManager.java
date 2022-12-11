@@ -71,24 +71,27 @@ public class SurvivalGameStateManager extends GameStateManager {
             switch (pressedKey) {
                 case UP:
                     player.setDirection(Direction.UP);
+                    player.move();
                     break;
                 case DOWN:
                     player.setDirection(Direction.DOWN);
+                    player.move();
                     break;
                 case LEFT:
                     player.setDirection(Direction.LEFT);
+                    player.move();
                     break;
                 case RIGHT:
                     player.setDirection(Direction.RIGHT);
+                    player.move();
                     break;
             }
         }
     }
 
     private void updateLevel() {
-        Node position = player.getPosition();
-        levelManager.setOffsetX(position.getScreenX());
-        levelManager.setOffsetY(position.getScreenY());
+        levelManager.setOffsetX(player.getWorldX());
+        levelManager.setOffsetY(player.getWorldY());
     }
 
     @Override

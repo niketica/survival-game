@@ -29,6 +29,10 @@ public class Player implements GameObject, PanelComponent {
 
     private Direction direction;
     private Node position;
+    private int worldX;
+    private int worldY;
+
+    private int speed = 3;
 
     public Player() {
         loadPlayerFrames();
@@ -120,5 +124,40 @@ public class Player implements GameObject, PanelComponent {
 
     public void setPosition(Node position) {
         this.position = position;
+    }
+
+    public int getWorldX() {
+        return worldX;
+    }
+
+    public void setWorldX(int worldX) {
+        this.worldX = worldX;
+    }
+
+    public int getWorldY() {
+        return worldY;
+    }
+
+    public void setWorldY(int worldY) {
+        this.worldY = worldY;
+    }
+
+    public void move() {
+        switch (direction) {
+            case UP:
+                worldY -= speed;
+                break;
+            case DOWN:
+                worldY += speed;
+                break;
+            case LEFT:
+                worldX -= speed;
+                break;
+            case RIGHT:
+                worldX += speed;
+                break;
+            default:
+                throw new IllegalStateException("Unknown direction: " + direction);
+        }
     }
 }

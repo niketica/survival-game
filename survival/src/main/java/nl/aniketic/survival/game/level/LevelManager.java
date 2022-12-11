@@ -32,8 +32,8 @@ public class LevelManager implements PanelComponent {
     @Override
     public void paintComponent(Graphics2D g2) {
         for (Node node : nodes) {
-            int nodeX = node.getScreenX() - offsetX;
-            int nodeY = node.getScreenY() - offsetY;
+            int nodeX = node.getWorldX() - offsetX;
+            int nodeY = node.getWorldY() - offsetY;
             int nodeSize = node.getSize();
 
             BufferedImage image = tileImageManager.getTileImage(node.getTileType());
