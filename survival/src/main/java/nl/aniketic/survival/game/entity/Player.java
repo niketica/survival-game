@@ -4,13 +4,19 @@ import nl.aniketic.survival.engine.display.PanelComponent;
 import nl.aniketic.survival.engine.gamestate.GameObject;
 import nl.aniketic.survival.game.common.Direction;
 import nl.aniketic.survival.game.common.ImageUtil;
+import nl.aniketic.survival.game.level.Node;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_HEIGHT;
+import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_WIDTH;
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.TILE_SIZE;
 
 public class Player implements GameObject, PanelComponent {
+
+    private static final int CENTER_X = SCREEN_WIDTH / 2 - TILE_SIZE / 2;
+    private static final int CENTER_Y = SCREEN_HEIGHT / 2 - TILE_SIZE / 2;
 
     private BufferedImage[] frontFrames;
     private BufferedImage[] backFrames;
@@ -22,6 +28,7 @@ public class Player implements GameObject, PanelComponent {
     private int frameIndex;
 
     private Direction direction;
+    private Node position;
 
     public Player() {
         loadPlayerFrames();
@@ -75,7 +82,7 @@ public class Player implements GameObject, PanelComponent {
 
     @Override
     public void paintComponent(Graphics2D g2) {
-        g2.drawImage(getCurrentFrame(), 100, 100, null);
+        g2.drawImage(getCurrentFrame(), CENTER_X, CENTER_Y, null);
     }
 
     private BufferedImage getCurrentFrame() {
@@ -105,5 +112,13 @@ public class Player implements GameObject, PanelComponent {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public Node getPosition() {
+        return position;
+    }
+
+    public void setPosition(Node position) {
+        this.position = position;
     }
 }

@@ -8,7 +8,6 @@ import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
 import nl.aniketic.survival.game.entity.Player;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.Node;
-import nl.aniketic.survival.game.level.TileType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +16,7 @@ import java.util.List;
 public class SurvivalGameStateManager extends GameStateManager {
 
     private Player player;
+    private LevelManager levelManager;
 
     @Override
     protected void startGameState() {
@@ -31,7 +31,7 @@ public class SurvivalGameStateManager extends GameStateManager {
     }
 
     private void loadLevel() {
-        LevelManager levelManager = new LevelManager();
+        levelManager = new LevelManager();
         levelManager.activate();
 
         Node node1 = new Node(0, 0);
@@ -51,10 +51,18 @@ public class SurvivalGameStateManager extends GameStateManager {
         player = new Player();
         player.activatePanelComponent();
         gameObjects.add(player);
+
+        Node node = levelManager.getNodes().get(0);
+        player.setPosition(node);
     }
 
     @Override
     protected void updatePreGameState() {
+        updatePlayer();
+        updateLevel();
+    }
+
+    private void updatePlayer() {
         Key pressedKey = Arrays.stream(Key.values())
                 .filter(Key::isPressed)
                 .findAny().orElse(null);
@@ -75,6 +83,12 @@ public class SurvivalGameStateManager extends GameStateManager {
                     break;
             }
         }
+    }
+
+    private void updateLevel() {
+        Node position = player.getPosition();
+        levelManager.setOffsetX(position.getScreenX());
+        levelManager.setOffsetY(position.getScreenY());
     }
 
     @Override
