@@ -5,6 +5,7 @@ import nl.aniketic.survival.game.common.SurvivalGameConstants;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_HEIG
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_WIDTH;
 
 public class LevelManager implements PanelComponent {
+
+    private final TileImageManager tileImageManager;
 
     private List<Node> nodes;
     private int offsetX;
@@ -21,6 +24,7 @@ public class LevelManager implements PanelComponent {
         nodes = new ArrayList<>();
         offsetX = 0;
         offsetY = 0;
+        tileImageManager = new TileImageManager();
     }
 
     @Override
@@ -30,10 +34,10 @@ public class LevelManager implements PanelComponent {
             int nodeY = node.getScreenY() - offsetY;
             int nodeSize = node.getSize();
 
-            g2.setColor(Color.GREEN);
+            BufferedImage image = tileImageManager.getTileImage(node.getTileType());
             if (nodeX + nodeSize >= 0 && nodeX <= SCREEN_WIDTH
                     && nodeY + nodeSize >= 0 && nodeY <= SCREEN_HEIGHT) {
-                g2.fillRect(nodeX, nodeY, nodeSize, nodeSize);
+                g2.drawImage(image, nodeX, nodeY, null);
             }
         }
     }

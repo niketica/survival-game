@@ -4,17 +4,20 @@ import nl.aniketic.survival.game.common.SurvivalGameConstants;
 
 public class Node {
 
-    private int size = SurvivalGameConstants.TILE_SIZE;
-    private int x;
-    private int y;
-    private int screenX;
-    private int screenY;
+    private final int size = SurvivalGameConstants.TILE_SIZE;
+    private final int x;
+    private final int y;
+    private final int screenX;
+    private final int screenY;
+
+    private TileType tileType;
 
     public Node(int x, int y) {
         this.x = x;
         this.y = y;
         screenX = x * size;
         screenY = y * size;
+        tileType = TileType.GRASS;
     }
 
     public int getX() {
@@ -35,5 +38,13 @@ public class Node {
 
     public int getSize() {
         return size;
+    }
+
+    public TileType getTileType() {
+        return tileType;
+    }
+
+    public void setTileType(TileType tileType) {
+        this.tileType = tileType;
     }
 }

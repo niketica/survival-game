@@ -2,18 +2,26 @@ package nl.aniketic.survival.game.gamestate;
 
 import nl.aniketic.survival.engine.display.DisplayManager;
 import nl.aniketic.survival.engine.gamestate.GameStateManager;
+import nl.aniketic.survival.game.common.Direction;
+import nl.aniketic.survival.game.controls.Key;
+import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
 import nl.aniketic.survival.game.entity.Player;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.Node;
+import nl.aniketic.survival.game.level.TileType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SurvivalGameStateManager extends GameStateManager {
 
+    private Player player;
+
     @Override
     protected void startGameState() {
         DisplayManager.createDisplay("SURVIVAL");
+        DisplayManager.addKeyListener(new SurvivalGameKeyHandler());
         startNewGame();
     }
 
@@ -40,14 +48,33 @@ public class SurvivalGameStateManager extends GameStateManager {
     }
 
     private void loadPlayer() {
-        Player player = new Player();
+        player = new Player();
         player.activatePanelComponent();
         gameObjects.add(player);
     }
 
     @Override
     protected void updatePreGameState() {
+        Key pressedKey = Arrays.stream(Key.values())
+                .filter(Key::isPressed)
+                .findAny().orElse(null);
 
+        if (pressedKey != null) {
+            switch (pressedKey) {
+                case UP:
+                    player.setDirection(Direction.UP);
+                    break;
+                case DOWN:
+                    player.setDirection(Direction.DOWN);
+                    break;
+                case LEFT:
+                    player.setDirection(Direction.LEFT);
+                    break;
+                case RIGHT:
+                    player.setDirection(Direction.RIGHT);
+                    break;
+            }
+        }
     }
 
     @Override
