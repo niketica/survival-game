@@ -1,8 +1,10 @@
 package nl.aniketic.survival.game.main;
 
+import nl.aniketic.survival.game.gamestate.SurvivalGameStateManager;
+
 public class MainComponent {
 
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        new SurvivalGameStateManager().startGame();
     }
 }
