@@ -10,9 +10,7 @@ import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.MapLoader;
 import nl.aniketic.survival.game.level.Node;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class SurvivalGameStateManager extends GameStateManager {
 
@@ -43,7 +41,7 @@ public class SurvivalGameStateManager extends GameStateManager {
         player.activatePanelComponent();
         gameObjects.add(player);
 
-        Node node = levelManager.getNodes().get(0);
+        Node node = levelManager.getNode(23, 19);
         player.setPosition(node);
     }
 

@@ -124,6 +124,8 @@ public class Player implements GameObject, PanelComponent {
 
     public void setPosition(Node position) {
         this.position = position;
+        setWorldX(position.getWorldX());
+        setWorldY(position.getWorldY());
     }
 
     public int getWorldX() {

@@ -63,6 +63,12 @@ public class LevelManager implements PanelComponent {
         return new ArrayList<>(nodes);
     }
 
+    public Node getNode(int x, int y) {
+        return nodes.stream()
+                .filter(n -> n.getX() == x && n.getY() == y)
+                .findAny().orElse(null);
+    }
+
     public void setNodes(List<Node> nodes) {
         this.nodes = nodes;
     }
