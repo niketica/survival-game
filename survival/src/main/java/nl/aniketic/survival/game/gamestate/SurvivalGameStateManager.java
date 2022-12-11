@@ -5,6 +5,7 @@ import nl.aniketic.survival.engine.gamestate.GameStateManager;
 import nl.aniketic.survival.game.common.Direction;
 import nl.aniketic.survival.game.controls.Key;
 import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
+import nl.aniketic.survival.game.entity.DoorObject;
 import nl.aniketic.survival.game.entity.KeyObject;
 import nl.aniketic.survival.game.entity.Player;
 import nl.aniketic.survival.game.level.LevelManager;
@@ -19,6 +20,7 @@ public class SurvivalGameStateManager extends GameStateManager {
     private Player player;
     private LevelManager levelManager;
     private KeyObject key;
+    private DoorObject door;
 
     @Override
     protected void startGameState() {
@@ -30,6 +32,7 @@ public class SurvivalGameStateManager extends GameStateManager {
     private void startNewGame() {
         loadLevel();
         loadKey();
+        loadDoor();
         loadPlayer();
     }
 
@@ -40,6 +43,20 @@ public class SurvivalGameStateManager extends GameStateManager {
         levelManager.activate();
     }
 
+    private void loadKey() {
+        key = new KeyObject();
+        Node node = levelManager.getNode(24, 14);
+        key.setPosition(node);
+        key.activate();
+    }
+
+    private void loadDoor() {
+        door = new DoorObject();
+        Node node = levelManager.getNode(26, 14);
+        door.setPosition(node);
+        door.activate();
+    }
+
     private void loadPlayer() {
         player = new Player();
         player.activate();
@@ -47,13 +64,6 @@ public class SurvivalGameStateManager extends GameStateManager {
 
         Node node = levelManager.getNode(23, 19);
         player.setPosition(node);
-    }
-
-    private void loadKey() {
-        key = new KeyObject();
-        Node node = levelManager.getNode(24, 14);
-        key.setPosition(node);
-        key.activate();
     }
 
     @Override
@@ -124,10 +134,9 @@ public class SurvivalGameStateManager extends GameStateManager {
     }
 
     private void updatePlayerOffset() {
-        levelManager.setOffsetX(player.getWorldX());
-        levelManager.setOffsetY(player.getWorldY());
-        key.setOffsetX(player.getWorldX());
-        key.setOffsetY(player.getWorldY());
+        levelManager.setOffset(player.getWorldX(), player.getWorldY());
+        key.setOffset(player.getWorldX(), player.getWorldY());
+        door.setOffset(player.getWorldX(), player.getWorldY());
     }
 
     @Override

@@ -12,7 +12,7 @@ import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_HEIG
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_WIDTH;
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.TILE_SIZE;
 
-public class KeyObject implements GameObject, PanelComponent {
+public class DoorObject implements GameObject, PanelComponent {
 
     private static final int CENTER_X = SCREEN_WIDTH / 2 - TILE_SIZE / 2;
     private static final int CENTER_Y = SCREEN_HEIGHT / 2 - TILE_SIZE / 2;
@@ -25,8 +25,8 @@ public class KeyObject implements GameObject, PanelComponent {
     private int offsetX;
     private int offsetY;
 
-    public KeyObject() {
-        image = loadImage("/entity/object/key.png");
+    public DoorObject() {
+        image = loadImage("/entity/object/door.png");
         worldX = 0;
         worldY = 0;
     }

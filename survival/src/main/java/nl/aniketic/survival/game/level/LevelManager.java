@@ -80,11 +80,8 @@ public class LevelManager implements PanelComponent {
         this.nodes = nodes;
     }
 
-    public void setOffsetX(int offsetX) {
-        this.offsetX = offsetX - CENTER_X;
-    }
-
-    public void setOffsetY(int offsetY) {
-        this.offsetY = offsetY - CENTER_Y;
+    public void setOffset(int x, int y) {
+        this.offsetX = x - CENTER_X;
+        this.offsetY = y - CENTER_Y;
     }
 }
