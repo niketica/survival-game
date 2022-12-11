@@ -7,6 +7,7 @@ import nl.aniketic.survival.game.controls.Key;
 import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
 import nl.aniketic.survival.game.entity.Player;
 import nl.aniketic.survival.game.level.LevelManager;
+import nl.aniketic.survival.game.level.MapLoader;
 import nl.aniketic.survival.game.level.Node;
 
 import java.util.ArrayList;
@@ -32,19 +33,9 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     private void loadLevel() {
         levelManager = new LevelManager();
+        int[][] map = MapLoader.loadMap("/map/map01.txt");
+        levelManager.setMap(map);
         levelManager.activate();
-
-        Node node1 = new Node(0, 0);
-        Node node2 = new Node(1, 0);
-        Node node3 = new Node(0, 1);
-        Node node4 = new Node(1, 1);
-        List<Node> nodes = new ArrayList<>();
-        nodes.add(node1);
-        nodes.add(node2);
-        nodes.add(node3);
-        nodes.add(node4);
-
-        levelManager.setNodes(nodes);
     }
 
     private void loadPlayer() {

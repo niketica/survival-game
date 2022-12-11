@@ -44,6 +44,21 @@ public class LevelManager implements PanelComponent {
         }
     }
 
+    public void setMap(int[][] map) {
+        List<Node> nodes = new ArrayList<>();
+
+        for (int row=0; row<map.length; row++) {
+            for (int col=0; col<map[0].length; col++) {
+                Node node = new Node(col, row);
+                int mapValue = map[row][col];
+                node.setTileType(TileType.getByMapValue(mapValue));
+                nodes.add(node);
+            }
+        }
+
+        this.nodes = nodes;
+    }
+
     public List<Node> getNodes() {
         return new ArrayList<>(nodes);
     }
