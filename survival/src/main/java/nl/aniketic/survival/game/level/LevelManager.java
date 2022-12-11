@@ -17,6 +17,7 @@ public class LevelManager implements PanelComponent {
     private static final int CENTER_Y = SCREEN_HEIGHT / 2 - TILE_SIZE / 2;
 
     private final TileImageManager tileImageManager;
+    private final List<TileType> solidTileTypes;
 
     private List<Node> nodes;
     private int offsetX;
@@ -27,6 +28,9 @@ public class LevelManager implements PanelComponent {
         offsetX = 0;
         offsetY = 0;
         tileImageManager = new TileImageManager();
+        solidTileTypes = new ArrayList<>();
+        solidTileTypes.add(TileType.WALL);
+        solidTileTypes.add(TileType.WATER);
     }
 
     @Override
@@ -47,11 +51,13 @@ public class LevelManager implements PanelComponent {
     public void setMap(int[][] map) {
         List<Node> nodes = new ArrayList<>();
 
-        for (int row=0; row<map.length; row++) {
-            for (int col=0; col<map[0].length; col++) {
+        for (int row = 0; row < map.length; row++) {
+            for (int col = 0; col < map[0].length; col++) {
                 Node node = new Node(col, row);
                 int mapValue = map[row][col];
-                node.setTileType(TileType.getByMapValue(mapValue));
+                TileType tileType = TileType.getByMapValue(mapValue);
+                node.setTileType(tileType);
+                node.setSolid(solidTileTypes.contains(tileType));
                 nodes.add(node);
             }
         }

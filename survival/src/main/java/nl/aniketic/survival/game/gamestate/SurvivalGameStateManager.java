@@ -10,6 +10,7 @@ import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.MapLoader;
 import nl.aniketic.survival.game.level.Node;
 
+import java.awt.Rectangle;
 import java.util.Arrays;
 
 public class SurvivalGameStateManager extends GameStateManager {
@@ -60,22 +61,56 @@ public class SurvivalGameStateManager extends GameStateManager {
             switch (pressedKey) {
                 case UP:
                     player.setDirection(Direction.UP);
-                    player.move();
+                    movePlayer();
                     break;
                 case DOWN:
                     player.setDirection(Direction.DOWN);
-                    player.move();
+                    movePlayer();
                     break;
                 case LEFT:
                     player.setDirection(Direction.LEFT);
-                    player.move();
+                    movePlayer();
                     break;
                 case RIGHT:
                     player.setDirection(Direction.RIGHT);
-                    player.move();
+                    movePlayer();
                     break;
             }
         }
+    }
+
+    private void movePlayer() {
+        Direction direction = player.getDirection();
+        Rectangle collisionBody = player.getCollisionBody();
+        switch (direction) {
+            case UP:
+                collisionBody.y -= player.getSpeed();
+                break;
+            case DOWN:
+                collisionBody.y += player.getSpeed();
+                break;
+            case LEFT:
+                collisionBody.x -= player.getSpeed();
+                break;
+            case RIGHT:
+                collisionBody.x += player.getSpeed();
+                break;
+        }
+
+        if (!isCollisionWithSolidNode(collisionBody)) {
+            player.move();
+        }
+    }
+
+    private boolean isCollisionWithSolidNode(Rectangle collisionBody) {
+        for (Node node : levelManager.getNodes()) {
+            if (node.isSolid()) {
+                if (collisionBody.intersects(node.getCollisionBody())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void updateLevel() {

@@ -7,6 +7,7 @@ import nl.aniketic.survival.game.common.ImageUtil;
 import nl.aniketic.survival.game.level.Node;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_HEIGHT;
@@ -18,12 +19,15 @@ public class Player implements GameObject, PanelComponent {
     private static final int CENTER_X = SCREEN_WIDTH / 2 - TILE_SIZE / 2;
     private static final int CENTER_Y = SCREEN_HEIGHT / 2 - TILE_SIZE / 2;
 
+    private final Rectangle collisionBody;
+    private final int collisionOffset;
+
     private BufferedImage[] frontFrames;
     private BufferedImage[] backFrames;
     private BufferedImage[] leftFrames;
     private BufferedImage[] rightFrames;
 
-    private int frameUpdateRate = 24;
+    private final int frameUpdateRate = 24;
     private int frameUpdateCount = 0;
     private int frameIndex;
 
@@ -38,6 +42,13 @@ public class Player implements GameObject, PanelComponent {
         loadPlayerFrames();
         frameIndex = 0;
         direction = Direction.DOWN;
+
+        int collisionSize = (int) (TILE_SIZE * 0.8);
+        if (collisionSize % 2 > 0) {
+            collisionSize--;
+        }
+        collisionOffset = (TILE_SIZE - collisionSize) / 2;
+        collisionBody = new Rectangle(0, 0, collisionSize, collisionSize);
     }
 
     private void loadPlayerFrames() {
@@ -124,24 +135,32 @@ public class Player implements GameObject, PanelComponent {
 
     public void setPosition(Node position) {
         this.position = position;
-        setWorldX(position.getWorldX());
-        setWorldY(position.getWorldY());
+        int worldX = position.getWorldX();
+        int worldY = position.getWorldY();
+        this.worldX = worldX;
+        this.worldY = worldY;
+        collisionBody.x = worldX + collisionOffset;
+        collisionBody.y = worldY + collisionOffset;
     }
 
     public int getWorldX() {
         return worldX;
     }
 
-    public void setWorldX(int worldX) {
-        this.worldX = worldX;
-    }
-
     public int getWorldY() {
         return worldY;
     }
 
-    public void setWorldY(int worldY) {
-        this.worldY = worldY;
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public void move() {
@@ -161,5 +180,11 @@ public class Player implements GameObject, PanelComponent {
             default:
                 throw new IllegalStateException("Unknown direction: " + direction);
         }
+        collisionBody.x = worldX + collisionOffset;
+        collisionBody.y = worldY + collisionOffset;
+    }
+
+    public Rectangle getCollisionBody() {
+        return new Rectangle(collisionBody);
     }
 }
