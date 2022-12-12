@@ -43,7 +43,7 @@ public class Player implements GameObject, PanelComponent {
         frameIndex = 0;
         direction = Direction.DOWN;
 
-        int collisionSize = (int) (TILE_SIZE * 0.8);
+        int collisionSize = (int) (TILE_SIZE * 0.7);
         if (collisionSize % 2 > 0) {
             collisionSize--;
         }
@@ -181,6 +181,16 @@ public class Player implements GameObject, PanelComponent {
                 throw new IllegalStateException("Unknown direction: " + direction);
         }
         collisionBody.x = worldX + collisionOffset;
+        collisionBody.y = worldY + collisionOffset;
+    }
+
+    public void setWorldX(int worldX) {
+        this.worldX = worldX;
+        collisionBody.x = worldX + collisionOffset;
+    }
+
+    public void setWorldY(int worldY) {
+        this.worldY = worldY;
         collisionBody.y = worldY + collisionOffset;
     }
 

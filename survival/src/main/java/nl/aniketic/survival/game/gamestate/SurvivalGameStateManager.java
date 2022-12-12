@@ -13,7 +13,6 @@ import nl.aniketic.survival.game.level.MapLoader;
 import nl.aniketic.survival.game.level.Node;
 
 import java.awt.Rectangle;
-import java.util.Arrays;
 
 public class SurvivalGameStateManager extends GameStateManager {
 
@@ -73,52 +72,37 @@ public class SurvivalGameStateManager extends GameStateManager {
     }
 
     private void updatePlayer() {
-        Key pressedKey = Arrays.stream(Key.values())
-                .filter(Key::isPressed)
-                .findAny().orElse(null);
-
-        if (pressedKey != null) {
-            switch (pressedKey) {
-                case UP:
-                    player.setDirection(Direction.UP);
-                    movePlayer();
-                    break;
-                case DOWN:
-                    player.setDirection(Direction.DOWN);
-                    movePlayer();
-                    break;
-                case LEFT:
-                    player.setDirection(Direction.LEFT);
-                    movePlayer();
-                    break;
-                case RIGHT:
-                    player.setDirection(Direction.RIGHT);
-                    movePlayer();
-                    break;
-            }
-        }
-    }
-
-    private void movePlayer() {
-        Direction direction = player.getDirection();
+        int potentialWorldX = player.getWorldX();
+        int potentialWorldY = player.getWorldY();
         Rectangle collisionBody = player.getCollisionBody();
-        switch (direction) {
-            case UP:
-                collisionBody.y -= player.getSpeed();
-                break;
-            case DOWN:
-                collisionBody.y += player.getSpeed();
-                break;
-            case LEFT:
-                collisionBody.x -= player.getSpeed();
-                break;
-            case RIGHT:
-                collisionBody.x += player.getSpeed();
-                break;
+
+        if (Key.UP.isPressed()) {
+            player.setDirection(Direction.UP);
+            potentialWorldY -= player.getSpeed();
+            collisionBody.y -= player.getSpeed();
+        }
+
+        if (Key.DOWN.isPressed()) {
+            player.setDirection(Direction.DOWN);
+            potentialWorldY += player.getSpeed();
+            collisionBody.y += player.getSpeed();
+        }
+
+        if (Key.LEFT.isPressed()) {
+            player.setDirection(Direction.LEFT);
+            potentialWorldX -= player.getSpeed();
+            collisionBody.x -= player.getSpeed();
+        }
+
+        if (Key.RIGHT.isPressed()) {
+            player.setDirection(Direction.RIGHT);
+            potentialWorldX += player.getSpeed();
+            collisionBody.x += player.getSpeed();
         }
 
         if (!isCollisionWithSolidNode(collisionBody)) {
-            player.move();
+            player.setWorldX(potentialWorldX);
+            player.setWorldY(potentialWorldY);
         }
     }
 
