@@ -52,25 +52,27 @@ public class ZombieController implements EntityController<Zombie> {
 
         int potentialX = zombie.getWorldX();
         int potentialY = zombie.getWorldY();
+        Rectangle collisionBody = zombie.getCollisionBody();
 
         if (targetX < potentialX) {
             potentialX -= zombie.getSpeed();
+            collisionBody.x -= zombie.getSpeed();
         } else if (targetX > potentialX) {
             potentialX += zombie.getSpeed();
+            collisionBody.x += zombie.getSpeed();
         }
 
         if (targetY < potentialY) {
             potentialY -= zombie.getSpeed();
+            collisionBody.y -= zombie.getSpeed();
         } else if (targetY > potentialY) {
             potentialY += zombie.getSpeed();
+            collisionBody.y += zombie.getSpeed();
         }
 
-        Rectangle collisionBody = zombie.getCollisionBody();
-        collisionBody.x += potentialX;
-        collisionBody.y += potentialY;
-
         boolean moving = false;
-        if (!levelManager.isCollisionWithSolidNode(collisionBody)) {
+        boolean collisionWithSolidNode = levelManager.isCollisionWithSolidNode(collisionBody);
+        if (!collisionWithSolidNode) {
             if (potentialX < zombie.getWorldX()) {
                 zombie.setDirection(Direction.LEFT);
             } else {
