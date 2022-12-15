@@ -4,6 +4,7 @@ import nl.aniketic.survival.game.entity.BaseEntity;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.Node;
 
+import java.awt.Color;
 import java.util.List;
 
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.TILE_SIZE;
@@ -24,5 +25,6 @@ public interface EntityController<T> {
 
         Node nodeByWorldPosition = levelManager.getNodeByWorldPosition(worldX + TILE_SIZE / 2, worldY + TILE_SIZE / 2);
         entity.setPosition(nodeByWorldPosition);
+        nodeByWorldPosition.setDebugColor(Color.RED);
     }
 }

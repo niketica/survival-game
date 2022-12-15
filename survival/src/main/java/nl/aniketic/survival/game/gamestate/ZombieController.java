@@ -6,6 +6,7 @@ import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.Node;
 import nl.aniketic.survival.game.pathfinding.AStarPathfindingController;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +54,13 @@ public class ZombieController implements EntityController<Zombie> {
         Node zombiePosition = zombie.getPosition();
         List<Node> path = pathfindingController.getPath(zombiePosition, targetPosition);
 
-        if (path == null || path.size() < 2) {
+        if (path == null || path.isEmpty()) {
             zombie.setMoving(false);
             return;
         }
 
-        targetPosition = path.get(path.size() - 2);
+        path.forEach(n -> n.setDebugColor(Color.YELLOW));
+        targetPosition = path.get(path.size() - 1);
 
         int targetX = targetPosition.getWorldX();
         int targetY = targetPosition.getWorldY();

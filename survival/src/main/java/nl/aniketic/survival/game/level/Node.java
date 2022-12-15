@@ -1,5 +1,6 @@
 package nl.aniketic.survival.game.level;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ public class Node {
 
     private int gValue; // Distance from this node to the start node
     private int hValue; // Distance from this node to the target node
+
+    private Color debugColor;
 
     public Node(int x, int y) {
         this.x = x;
@@ -126,5 +129,13 @@ public class Node {
 
     public void setConnection(Node connection) {
         this.connection = connection;
+    }
+
+    public Color getDebugColor() {
+        return debugColor;
+    }
+
+    public void setDebugColor(Color debugColor) {
+        this.debugColor = debugColor;
     }
 }
