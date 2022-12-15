@@ -23,7 +23,7 @@ public interface EntityController<T> {
         int worldX = entity.getWorldX();
         int worldY = entity.getWorldY();
 
-        Node nodeByWorldPosition = levelManager.getNodeByWorldPosition(worldX + TILE_SIZE / 2, worldY + TILE_SIZE / 2);
+        Node nodeByWorldPosition = levelManager.getNodeByWorldPosition(worldX + TILE_SIZE / 2, worldY + TILE_SIZE);
         entity.setPosition(nodeByWorldPosition);
         nodeByWorldPosition.setDebugColor(Color.RED);
     }

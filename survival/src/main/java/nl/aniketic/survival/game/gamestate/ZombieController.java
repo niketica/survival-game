@@ -70,24 +70,64 @@ public class ZombieController implements EntityController<Zombie> {
         Rectangle collisionBody = zombie.getCollisionBody();
 
         if (targetX < potentialX) {
-            potentialX -= zombie.getSpeed();
             collisionBody.x -= zombie.getSpeed();
         } else if (targetX > potentialX) {
-            potentialX += zombie.getSpeed();
             collisionBody.x += zombie.getSpeed();
         }
 
         if (targetY < potentialY) {
-            potentialY -= zombie.getSpeed();
             collisionBody.y -= zombie.getSpeed();
         } else if (targetY > potentialY) {
-            potentialY += zombie.getSpeed();
             collisionBody.y += zombie.getSpeed();
         }
+        boolean collisionWithSolidNode = levelManager.isCollisionWithSolidNode(collisionBody);
+
+        if (collisionWithSolidNode) {
+            collisionBody = zombie.getCollisionBody();
+            if (targetX < potentialX) {
+                collisionBody.x -= zombie.getSpeed();
+            } else if (targetX > potentialX) {
+                collisionBody.x += zombie.getSpeed();
+            }
+            collisionWithSolidNode = levelManager.isCollisionWithSolidNode(collisionBody);
+            if (collisionWithSolidNode) {
+                collisionBody = zombie.getCollisionBody();
+                if (targetY < potentialY) {
+                    collisionBody.y -= zombie.getSpeed();
+                } else if (targetY > potentialY) {
+                    collisionBody.y += zombie.getSpeed();
+                }
+                collisionWithSolidNode = levelManager.isCollisionWithSolidNode(collisionBody);
+                if (!collisionWithSolidNode) {
+                    if (targetY < potentialY) {
+                        potentialY -= zombie.getSpeed();
+                    } else if (targetY > potentialY) {
+                        potentialY += zombie.getSpeed();
+                    }
+                }
+            } else {
+                if (targetX < potentialX) {
+                    potentialX -= zombie.getSpeed();
+                } else if (targetX > potentialX) {
+                    potentialX += zombie.getSpeed();
+                }
+            }
+        } else {
+            if (targetX < potentialX) {
+                potentialX -= zombie.getSpeed();
+            } else if (targetX > potentialX) {
+                potentialX += zombie.getSpeed();
+            }
+
+            if (targetY < potentialY) {
+                potentialY -= zombie.getSpeed();
+            } else if (targetY > potentialY) {
+                potentialY += zombie.getSpeed();
+            }
+        }
+
 
         boolean moving = false;
-//        boolean collisionWithSolidNode = levelManager.isCollisionWithSolidNode(collisionBody);
-        boolean collisionWithSolidNode = false;
         if (!collisionWithSolidNode) {
             if (potentialX < zombie.getWorldX()) {
                 zombie.setDirection(Direction.LEFT);

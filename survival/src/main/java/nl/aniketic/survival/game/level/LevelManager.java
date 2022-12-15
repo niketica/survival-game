@@ -75,13 +75,6 @@ public class LevelManager implements PanelComponent {
 
         this.nodes = nodes;
         nodes.forEach(this::addNeighbourNodes);
-
-
-        List<Node> collect = nodes.stream().filter(n -> n.getNeighbours().isEmpty()).collect(Collectors.toList());
-    }
-
-    public List<Node> getNodes() {
-        return new ArrayList<>(nodes);
     }
 
     public Node getNode(int x, int y) {
@@ -142,5 +135,24 @@ public class LevelManager implements PanelComponent {
         if (nodeRight != null) {
             node.addNeighbour(nodeRight);
         }
+
+        Node nodeNW = getNode(x - 1, y - 1);
+        Node nodeNE = getNode(x + 1, y - 1);
+        Node nodeSE = getNode(x + 1, y + 1);
+        Node nodeSW = getNode(x - 1, y + 1);
+
+        if (nodeNW != null) {
+            node.addNeighbour(nodeNW);
+        }
+        if (nodeNE != null) {
+            node.addNeighbour(nodeNE);
+        }
+        if (nodeSE != null) {
+            node.addNeighbour(nodeSE);
+        }
+        if (nodeSW != null) {
+            node.addNeighbour(nodeSW);
+        }
+
     }
 }
