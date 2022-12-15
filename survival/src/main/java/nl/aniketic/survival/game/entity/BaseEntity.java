@@ -39,6 +39,11 @@ public class BaseEntity implements GameObject, PanelComponent {
     protected int speed = 3;
     protected boolean moving;
 
+    protected int hitPoints = -1;
+
+    protected int iFrames = 120;
+    protected int currentIFrameCount = iFrames;
+
     @Override
     public void paintComponent(Graphics2D g2) {
         int nodeX = worldX - offsetX;
@@ -53,6 +58,7 @@ public class BaseEntity implements GameObject, PanelComponent {
     @Override
     public void update() {
         updateSprite();
+        updateIFrames();
     }
 
     @Override
@@ -171,5 +177,27 @@ public class BaseEntity implements GameObject, PanelComponent {
         } else {
             spriteUpdateCount++;
         }
+    }
+
+    protected void updateIFrames() {
+        if (currentIFrameCount < iFrames) {
+            currentIFrameCount++;
+        }
+    }
+
+    public int getHitPoints() {
+        return hitPoints;
+    }
+
+    public void setHitPoints(int hitPoints) {
+        if (currentIFrameCount >= iFrames) {
+            this.hitPoints = hitPoints;
+            currentIFrameCount = 0;
+            System.out.println("BRAINS!!!");
+        }
+    }
+
+    protected boolean flickerFromHit() {
+        return currentIFrameCount < iFrames && currentIFrameCount % 8 > 0;
     }
 }

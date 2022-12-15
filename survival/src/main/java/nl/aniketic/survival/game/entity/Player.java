@@ -8,6 +8,7 @@ public class Player extends BaseEntity {
     public Player() {
         loadPlayerFrames();
         setBasicCollisionBody();
+        hitPoints = 100;
     }
 
     private void loadPlayerFrames() {
@@ -29,6 +30,9 @@ public class Player extends BaseEntity {
 
     @Override
     public void paintComponent(Graphics2D g2) {
+        if (flickerFromHit()) {
+            return;
+        }
         g2.drawImage(getCurrentSprite(), CENTER_X, CENTER_Y, null);
     }
 }
