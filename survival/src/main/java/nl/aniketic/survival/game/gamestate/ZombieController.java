@@ -4,6 +4,7 @@ import nl.aniketic.survival.game.common.Direction;
 import nl.aniketic.survival.game.entity.Zombie;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.Node;
+import nl.aniketic.survival.game.pathfinding.AStarPathfindingController;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class ZombieController implements EntityController<Zombie> {
 
     private final SurvivalGameStateManager survivalGameStateManager;
     private final LevelManager levelManager;
+    private final AStarPathfindingController pathfindingController;
 
     private List<Zombie> zombies;
 
@@ -20,6 +22,7 @@ public class ZombieController implements EntityController<Zombie> {
                             LevelManager levelManager) {
         this.survivalGameStateManager = survivalGameStateManager;
         this.levelManager = levelManager;
+        this.pathfindingController = new AStarPathfindingController();
         zombies = new ArrayList<>();
     }
 
@@ -47,6 +50,16 @@ public class ZombieController implements EntityController<Zombie> {
     }
 
     private void moveZombie(Zombie zombie, Node targetPosition) {
+        Node zombiePosition = zombie.getPosition();
+        List<Node> path = pathfindingController.getPath(zombiePosition, targetPosition);
+
+        if (path == null || path.size() < 2) {
+            zombie.setMoving(false);
+            return;
+        }
+
+        targetPosition = path.get(path.size() - 2);
+
         int targetX = targetPosition.getWorldX();
         int targetY = targetPosition.getWorldY();
 
@@ -71,7 +84,8 @@ public class ZombieController implements EntityController<Zombie> {
         }
 
         boolean moving = false;
-        boolean collisionWithSolidNode = levelManager.isCollisionWithSolidNode(collisionBody);
+//        boolean collisionWithSolidNode = levelManager.isCollisionWithSolidNode(collisionBody);
+        boolean collisionWithSolidNode = false;
         if (!collisionWithSolidNode) {
             if (potentialX < zombie.getWorldX()) {
                 zombie.setDirection(Direction.LEFT);

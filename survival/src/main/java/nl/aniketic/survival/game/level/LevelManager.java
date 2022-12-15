@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_HEIGHT;
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_WIDTH;
@@ -65,6 +66,10 @@ public class LevelManager implements PanelComponent {
         }
 
         this.nodes = nodes;
+        nodes.forEach(this::addNeighbourNodes);
+
+
+        List<Node> collect = nodes.stream().filter(n -> n.getNeighbours().isEmpty()).collect(Collectors.toList());
     }
 
     public List<Node> getNodes() {
@@ -107,5 +112,27 @@ public class LevelManager implements PanelComponent {
             }
         }
         return false;
+    }
+
+    private void addNeighbourNodes(Node node) {
+        int x = node.getX();
+        int y = node.getY();
+        Node nodeUp = getNode(x, y - 1);
+        Node nodeDown = getNode(x, y + 1);
+        Node nodeLeft = getNode(x - 1, y);
+        Node nodeRight = getNode(x + 1, y);
+
+        if (nodeUp != null) {
+            node.addNeighbour(nodeUp);
+        }
+        if (nodeDown != null) {
+            node.addNeighbour(nodeDown);
+        }
+        if (nodeLeft != null) {
+            node.addNeighbour(nodeLeft);
+        }
+        if (nodeRight != null) {
+            node.addNeighbour(nodeRight);
+        }
     }
 }

@@ -6,6 +6,8 @@ import nl.aniketic.survival.game.level.Node;
 
 import java.util.List;
 
+import static nl.aniketic.survival.game.common.SurvivalGameConstants.TILE_SIZE;
+
 public interface EntityController<T> {
 
     void loadEntity(int x, int y);
@@ -20,7 +22,7 @@ public interface EntityController<T> {
         int worldX = entity.getWorldX();
         int worldY = entity.getWorldY();
 
-        Node nodeByWorldPosition = levelManager.getNodeByWorldPosition(worldX, worldY);
+        Node nodeByWorldPosition = levelManager.getNodeByWorldPosition(worldX + TILE_SIZE / 2, worldY + TILE_SIZE / 2);
         entity.setPosition(nodeByWorldPosition);
     }
 }
