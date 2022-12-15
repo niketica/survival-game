@@ -209,4 +209,8 @@ public class BaseEntity implements GameObject, PanelComponent {
     public Node getPosition() {
         return position;
     }
+
+    public int getCollisionOffset() {
+        return collisionOffset;
+    }
 }
