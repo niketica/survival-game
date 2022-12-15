@@ -8,6 +8,7 @@ import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
 import nl.aniketic.survival.game.entity.DoorObject;
 import nl.aniketic.survival.game.entity.KeyObject;
 import nl.aniketic.survival.game.entity.Player;
+import nl.aniketic.survival.game.entity.Zombie;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.MapLoader;
 import nl.aniketic.survival.game.level.Node;
@@ -20,6 +21,7 @@ public class SurvivalGameStateManager extends GameStateManager {
     private LevelManager levelManager;
     private KeyObject key;
     private DoorObject door;
+    private Zombie zombie;
 
     @Override
     protected void startGameState() {
@@ -33,6 +35,7 @@ public class SurvivalGameStateManager extends GameStateManager {
         loadKey();
         loadDoor();
         loadPlayer();
+        loadZombie();
     }
 
     private void loadLevel() {
@@ -65,6 +68,15 @@ public class SurvivalGameStateManager extends GameStateManager {
         player.setPosition(node);
     }
 
+    private void loadZombie() {
+        zombie = new Zombie();
+        gameObjects.add(zombie);
+
+        Node node = levelManager.getNode(25, 14);
+        zombie.setPosition(node);
+        zombie.activate();
+    }
+
     @Override
     protected void updatePreGameState() {
         updatePlayer();
@@ -76,31 +88,39 @@ public class SurvivalGameStateManager extends GameStateManager {
         int potentialWorldY = player.getWorldY();
         Rectangle collisionBody = player.getCollisionBody();
 
+        boolean moving = false;
+
         if (Key.UP.isPressed()) {
+            moving = true;
             player.setDirection(Direction.UP);
             potentialWorldY -= player.getSpeed();
             collisionBody.y -= player.getSpeed();
         }
 
         if (Key.DOWN.isPressed()) {
+            moving = true;
             player.setDirection(Direction.DOWN);
             potentialWorldY += player.getSpeed();
             collisionBody.y += player.getSpeed();
         }
 
         if (Key.LEFT.isPressed()) {
+            moving = true;
             player.setDirection(Direction.LEFT);
             potentialWorldX -= player.getSpeed();
             collisionBody.x -= player.getSpeed();
         }
 
         if (Key.RIGHT.isPressed()) {
+            moving = true;
             player.setDirection(Direction.RIGHT);
             potentialWorldX += player.getSpeed();
             collisionBody.x += player.getSpeed();
         }
 
-        if (!isCollisionWithSolidNode(collisionBody)) {
+        player.setMoving(moving);
+
+        if (moving && !isCollisionWithSolidNode(collisionBody)) {
             player.setWorldX(potentialWorldX);
             player.setWorldY(potentialWorldY);
         }
@@ -121,6 +141,7 @@ public class SurvivalGameStateManager extends GameStateManager {
         levelManager.setOffset(player.getWorldX(), player.getWorldY());
         key.setOffset(player.getWorldX(), player.getWorldY());
         door.setOffset(player.getWorldX(), player.getWorldY());
+        zombie.setOffset(player.getWorldX(), player.getWorldY());
     }
 
     @Override

@@ -28,12 +28,14 @@ public class TileImageManager {
         BufferedImage wall = loadImage("/tile/wall.png");
         BufferedImage water = loadImage("/tile/water.png");
         BufferedImage tree = loadImage("/tile/tree.png");
+        BufferedImage stone = loadImage("/tile/stone.png");
         tileMap.put(TileType.GRASS, grass);
         tileMap.put(TileType.EARTH, earth);
         tileMap.put(TileType.SAND, sand);
         tileMap.put(TileType.WALL, wall);
         tileMap.put(TileType.WATER, water);
         tileMap.put(TileType.TREE, tree);
+        tileMap.put(TileType.STONE, stone);
     }
 
     private BufferedImage loadImage(String path) {
