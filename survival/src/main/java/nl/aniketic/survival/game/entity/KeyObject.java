@@ -9,7 +9,7 @@ public class KeyObject extends BaseEntity {
     }
 
     @Override
-    public void setPosition(Node position) {
+    public void setWorldPosition(Node position) {
         this.position = position;
         worldX = position.getWorldX();
         worldY = position.getWorldY();

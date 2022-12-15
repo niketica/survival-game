@@ -7,6 +7,7 @@ import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.Node;
 
 import java.awt.Rectangle;
+import java.util.List;
 
 public class PlayerController implements EntityController<Player> {
 
@@ -28,7 +29,7 @@ public class PlayerController implements EntityController<Player> {
         survivalGameStateManager.addGameObject(player);
 
         Node node = levelManager.getNode(x, y);
-        player.setPosition(node);
+        player.setWorldPosition(node);
     }
 
     @Override
@@ -40,6 +41,11 @@ public class PlayerController implements EntityController<Player> {
     @Override
     public Player getEntity() {
         return player;
+    }
+
+    @Override
+    public List<Player> getEntities() {
+        return null;
     }
 
     private void updatePlayer() {
@@ -82,6 +88,7 @@ public class PlayerController implements EntityController<Player> {
         if (moving && !levelManager.isCollisionWithSolidNode(collisionBody)) {
             player.setWorldX(potentialWorldX);
             player.setWorldY(potentialWorldY);
+            setNode(levelManager, player);
         }
     }
 }

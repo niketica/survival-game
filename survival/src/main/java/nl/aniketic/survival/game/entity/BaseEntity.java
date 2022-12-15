@@ -72,7 +72,7 @@ public class BaseEntity implements GameObject, PanelComponent {
         deactivate();
     }
 
-    public void setPosition(Node position) {
+    public void setWorldPosition(Node position) {
         this.position = position;
         int worldX = position.getWorldX();
         int worldY = position.getWorldY();
@@ -80,6 +80,10 @@ public class BaseEntity implements GameObject, PanelComponent {
         this.worldY = worldY;
         collisionBody.x = worldX + collisionOffset;
         collisionBody.y = worldY + collisionOffset;
+    }
+
+    public void setPosition(Node position) {
+        this.position = position;
     }
 
     public void setDirection(Direction direction) {
@@ -200,5 +204,9 @@ public class BaseEntity implements GameObject, PanelComponent {
 
     protected boolean flickerFromHit() {
         return currentIFrameCount < iFrames && currentIFrameCount % 8 > 0;
+    }
+
+    public Node getPosition() {
+        return position;
     }
 }

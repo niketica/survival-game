@@ -5,9 +5,9 @@ import nl.aniketic.survival.engine.gamestate.GameObject;
 import nl.aniketic.survival.engine.gamestate.GameStateManager;
 import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
 import nl.aniketic.survival.game.entity.Player;
-import nl.aniketic.survival.game.entity.Zombie;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.MapLoader;
+import nl.aniketic.survival.game.level.Node;
 
 public class SurvivalGameStateManager extends GameStateManager {
 
@@ -34,7 +34,7 @@ public class SurvivalGameStateManager extends GameStateManager {
         doorController.loadEntity(26, 14);
 
         zombieController = new ZombieController(this, levelManager);
-        zombieController.loadEntity(25, 14);
+//        zombieController.loadEntity(25, 14);
 
         playerController = new PlayerController(this, levelManager);
         playerController.loadEntity(23, 19);
@@ -55,11 +55,12 @@ public class SurvivalGameStateManager extends GameStateManager {
         zombieController.update();
 
         Player player = playerController.getEntity();
-        Zombie zombie = zombieController.getEntity();
 
-        if (player.getCollisionBody().intersects(zombie.getCollisionBody())) {
-            player.setCurrentHitPoints(player.getCurrentHitPoints() - 10);
-        }
+        zombieController.getEntities().forEach(zombie -> {
+            if (player.getCollisionBody().intersects(zombie.getCollisionBody())) {
+                player.setCurrentHitPoints(player.getCurrentHitPoints() - 10);
+            }
+        });
     }
 
     @Override
@@ -79,6 +80,10 @@ public class SurvivalGameStateManager extends GameStateManager {
         levelManager.setOffset(player.getWorldX(), player.getWorldY());
         keyController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
         doorController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
-        zombieController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
+        zombieController.getEntities().forEach(zombie -> zombie.setOffset(player.getWorldX(), player.getWorldY()));
+    }
+
+    public Node getPlayerPosition() {
+        return playerController.getEntity().getPosition();
     }
 }

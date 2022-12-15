@@ -77,6 +77,18 @@ public class LevelManager implements PanelComponent {
                 .findAny().orElse(null);
     }
 
+    public Node getNodeByWorldPosition(int worldX, int worldY) {
+        return nodes.stream()
+                .filter(n -> {
+                    boolean x1 = worldX >= n.getWorldX();
+                    boolean x2 = worldX <= n.getWorldX() + TILE_SIZE;
+                    boolean y1 = worldY >= n.getWorldY();
+                    boolean y2 = worldY <= n.getWorldY() + TILE_SIZE;
+                    return x1 && x2 && y1 && y2;
+                })
+                .findAny().orElse(null);
+    }
+
     public void setNodes(List<Node> nodes) {
         this.nodes = nodes;
     }

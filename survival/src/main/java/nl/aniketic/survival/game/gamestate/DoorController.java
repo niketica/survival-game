@@ -4,6 +4,8 @@ import nl.aniketic.survival.game.entity.DoorObject;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.Node;
 
+import java.util.List;
+
 public class DoorController implements EntityController<DoorObject> {
 
     private final LevelManager levelManager;
@@ -18,7 +20,7 @@ public class DoorController implements EntityController<DoorObject> {
     public void loadEntity(int x, int y) {
         door = new DoorObject();
         Node node = levelManager.getNode(x, y);
-        door.setPosition(node);
+        door.setWorldPosition(node);
         door.activate();
     }
 
@@ -30,5 +32,10 @@ public class DoorController implements EntityController<DoorObject> {
     @Override
     public DoorObject getEntity() {
         return door;
+    }
+
+    @Override
+    public List<DoorObject> getEntities() {
+        return null;
     }
 }

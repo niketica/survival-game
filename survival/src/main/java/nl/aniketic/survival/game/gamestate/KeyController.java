@@ -4,6 +4,8 @@ import nl.aniketic.survival.game.entity.KeyObject;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.Node;
 
+import java.util.List;
+
 public class KeyController implements EntityController<KeyObject> {
 
     private final LevelManager levelManager;
@@ -18,7 +20,7 @@ public class KeyController implements EntityController<KeyObject> {
     public void loadEntity(int x, int y) {
         key = new KeyObject();
         Node node = levelManager.getNode(24, 14);
-        key.setPosition(node);
+        key.setWorldPosition(node);
         key.activate();
     }
 
@@ -30,5 +32,10 @@ public class KeyController implements EntityController<KeyObject> {
     @Override
     public KeyObject getEntity() {
         return key;
+    }
+
+    @Override
+    public List<KeyObject> getEntities() {
+        return null;
     }
 }

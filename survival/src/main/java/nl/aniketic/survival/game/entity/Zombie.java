@@ -10,6 +10,7 @@ public class Zombie extends BaseEntity {
         loadZombieFrames();
         setBasicCollisionBody();
         currentHitPoints = 100;
+        speed = 1;
     }
 
     private void loadZombieFrames() {
@@ -29,7 +30,7 @@ public class Zombie extends BaseEntity {
         rightSprites[2] = right3;
     }
 
-    public void setPosition(Node position) {
+    public void setWorldPosition(Node position) {
         this.position = position;
         int worldX = position.getWorldX();
         int worldY = position.getWorldY();
