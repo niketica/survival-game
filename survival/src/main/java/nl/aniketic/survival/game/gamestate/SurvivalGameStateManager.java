@@ -58,7 +58,7 @@ public class SurvivalGameStateManager extends GameStateManager {
         Zombie zombie = zombieController.getEntity();
 
         if (player.getCollisionBody().intersects(zombie.getCollisionBody())) {
-            player.setHitPoints(player.getHitPoints() - 10);
+            player.setCurrentHitPoints(player.getCurrentHitPoints() - 10);
         }
     }
 

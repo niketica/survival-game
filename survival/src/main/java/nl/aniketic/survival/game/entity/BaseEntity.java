@@ -39,7 +39,8 @@ public class BaseEntity implements GameObject, PanelComponent {
     protected int speed = 3;
     protected boolean moving;
 
-    protected int hitPoints = -1;
+    protected int maxHitPoints = -1;
+    protected int currentHitPoints = -1;
 
     protected int iFrames = 120;
     protected int currentIFrameCount = iFrames;
@@ -185,13 +186,13 @@ public class BaseEntity implements GameObject, PanelComponent {
         }
     }
 
-    public int getHitPoints() {
-        return hitPoints;
+    public int getCurrentHitPoints() {
+        return currentHitPoints;
     }
 
-    public void setHitPoints(int hitPoints) {
+    public void setCurrentHitPoints(int hitPoints) {
         if (currentIFrameCount >= iFrames) {
-            this.hitPoints = hitPoints;
+            this.currentHitPoints = hitPoints;
             currentIFrameCount = 0;
             System.out.println("BRAINS!!!");
         }

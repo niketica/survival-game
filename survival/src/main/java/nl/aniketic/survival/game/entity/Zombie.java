@@ -9,7 +9,7 @@ public class Zombie extends BaseEntity {
     public Zombie() {
         loadZombieFrames();
         setBasicCollisionBody();
-        hitPoints = 100;
+        currentHitPoints = 100;
     }
 
     private void loadZombieFrames() {

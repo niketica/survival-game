@@ -79,20 +79,9 @@ public class PlayerController implements EntityController<Player> {
 
         player.setMoving(moving);
 
-        if (moving && !isCollisionWithSolidNode(collisionBody)) {
+        if (moving && !levelManager.isCollisionWithSolidNode(collisionBody)) {
             player.setWorldX(potentialWorldX);
             player.setWorldY(potentialWorldY);
         }
-    }
-
-    private boolean isCollisionWithSolidNode(Rectangle collisionBody) {
-        for (Node node : levelManager.getNodes()) {
-            if (node.isSolid()) {
-                if (collisionBody.intersects(node.getCollisionBody())) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

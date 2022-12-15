@@ -1,5 +1,6 @@
 package nl.aniketic.survival.game.entity;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
@@ -8,7 +9,8 @@ public class Player extends BaseEntity {
     public Player() {
         loadPlayerFrames();
         setBasicCollisionBody();
-        hitPoints = 100;
+        maxHitPoints = 100;
+        currentHitPoints = maxHitPoints;
     }
 
     private void loadPlayerFrames() {
@@ -30,9 +32,28 @@ public class Player extends BaseEntity {
 
     @Override
     public void paintComponent(Graphics2D g2) {
+        drawHitBox(g2);
+
         if (flickerFromHit()) {
             return;
         }
         g2.drawImage(getCurrentSprite(), CENTER_X, CENTER_Y, null);
+    }
+
+    private void drawHitBox(Graphics2D g2) {
+        int hitBoxX = CENTER_X;
+        int hitBoxY = CENTER_Y - 12;
+        g2.setColor(Color.BLACK);
+        g2.fillRect(hitBoxX, hitBoxY, 64, 10);
+        g2.setColor(Color.RED);
+
+        double percentage;
+        if (currentHitPoints > 0) {
+            percentage = (double)currentHitPoints / maxHitPoints;
+        } else {
+            percentage = 0;
+        }
+
+        g2.fillRect(hitBoxX, hitBoxY, (int) (64 * percentage), 10);
     }
 }

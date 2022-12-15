@@ -3,6 +3,7 @@ package nl.aniketic.survival.game.level;
 import nl.aniketic.survival.engine.display.PanelComponent;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,5 +84,16 @@ public class LevelManager implements PanelComponent {
     public void setOffset(int x, int y) {
         this.offsetX = x - CENTER_X;
         this.offsetY = y - CENTER_Y;
+    }
+
+    public boolean isCollisionWithSolidNode(Rectangle collisionBody) {
+        for (Node node : nodes) {
+            if (node.isSolid()) {
+                if (collisionBody.intersects(node.getCollisionBody())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
