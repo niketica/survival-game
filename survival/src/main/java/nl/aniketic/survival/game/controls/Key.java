@@ -6,7 +6,8 @@ public enum Key {
     UP,
     LEFT,
     RIGHT,
-    DOWN;
+    DOWN,
+    SPACE;
 
     private final KeyObserver keyObserver;
 
