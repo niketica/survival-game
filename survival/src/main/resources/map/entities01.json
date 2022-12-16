@@ -1,0 +1,16 @@
+{
+  "zombies": [
+    {
+      "worldX": 43,
+      "worldY": 19
+    },
+    {
+      "worldX": 41,
+      "worldY": 17
+    },
+    {
+      "worldX": 43,
+      "worldY": 24
+    }
+  ]
+}

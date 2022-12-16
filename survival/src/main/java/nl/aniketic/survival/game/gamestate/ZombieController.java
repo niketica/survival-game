@@ -16,6 +16,7 @@ public class ZombieController implements EntityController<Zombie> {
     private final SurvivalGameStateManager survivalGameStateManager;
     private final LevelManager levelManager;
     private final AStarPathfindingController pathfindingController;
+    private final int chaseDistance = 5;
 
     private List<Zombie> zombies;
 
@@ -47,13 +48,20 @@ public class ZombieController implements EntityController<Zombie> {
     public void update() {
         Node playerPosition = survivalGameStateManager.getPlayerPosition();
         zombies.forEach(zombie -> moveZombie(zombie, playerPosition));
-        if (zombies.isEmpty()) {
-            loadEntity(43, 19);
-        }
+//        if (zombies.isEmpty()) {
+//            loadEntity(43, 19);
+//        }
     }
 
     private void moveZombie(Zombie zombie, Node targetPosition) {
         Node zombiePosition = zombie.getPosition();
+
+        int distance = zombiePosition.getDistance(targetPosition);
+        if (distance > chaseDistance) {
+            zombie.setMoving(false);
+            return;
+        }
+
         List<Node> path = pathfindingController.getPath(zombiePosition, targetPosition);
 
         if (path == null || path.isEmpty()) {

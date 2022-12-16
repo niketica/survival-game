@@ -31,6 +31,7 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     private void startNewGame() {
         levelManager = createLevelManager();
+        MapLoader.Entities entities = MapLoader.loadEntities("/map/entities01.json");
 
         keyController = new KeyController(levelManager);
         keyController.loadEntity(24, 14);
@@ -39,7 +40,7 @@ public class SurvivalGameStateManager extends GameStateManager {
         doorController.loadEntity(26, 14);
 
         zombieController = new ZombieController(this, levelManager);
-//        zombieController.loadEntity(25, 14);
+        entities.getZombies().forEach(zombie -> zombieController.loadEntity(zombie.getWorldX(), zombie.getWorldY()));
 
         playerController = new PlayerController(this, levelManager);
         playerController.loadEntity(23, 19);
