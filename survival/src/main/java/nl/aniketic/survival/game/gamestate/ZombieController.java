@@ -16,7 +16,7 @@ public class ZombieController implements EntityController<Zombie> {
     private final SurvivalGameStateManager survivalGameStateManager;
     private final LevelManager levelManager;
     private final AStarPathfindingController pathfindingController;
-    private final int chaseDistance = 5;
+    private final int chaseDistance = 6;
 
     private List<Zombie> zombies;
 

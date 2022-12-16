@@ -1,4 +1,8 @@
 {
+  "player": {
+    "worldX": 8,
+    "worldY": 30
+  },
   "zombies": [
     {
       "worldX": 43,
@@ -11,6 +15,12 @@
     {
       "worldX": 43,
       "worldY": 24
+    }
+  ],
+  "doors": [
+    {
+      "worldX": 8,
+      "worldY": 28
     }
   ]
 }

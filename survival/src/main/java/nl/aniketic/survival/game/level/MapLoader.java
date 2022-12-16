@@ -54,7 +54,17 @@ public class MapLoader {
     }
 
     public static class Entities {
+        private Entity player;
         private List<Entity> zombies;
+        private List<Entity> doors;
+
+        public Entity getPlayer() {
+            return player;
+        }
+
+        public void setPlayer(Entity player) {
+            this.player = player;
+        }
 
         public List<Entity> getZombies() {
             if (zombies == null) {
@@ -65,6 +75,17 @@ public class MapLoader {
 
         public void setZombies(List<Entity> zombies) {
             this.zombies = zombies;
+        }
+
+        public List<Entity> getDoors() {
+            if (doors == null) {
+                doors = new ArrayList<>();
+            }
+            return doors;
+        }
+
+        public void setDoors(List<Entity> doors) {
+            this.doors = doors;
         }
     }
 

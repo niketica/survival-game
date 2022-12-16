@@ -9,7 +9,8 @@ public enum TileType {
     WALL(3),
     WATER(4),
     TREE(5),
-    STONE(6);
+    STONE(6),
+    BRICK(7);
 
     private final int mapValue;
 

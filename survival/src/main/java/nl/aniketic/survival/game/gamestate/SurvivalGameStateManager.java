@@ -4,6 +4,7 @@ import nl.aniketic.survival.engine.display.DisplayManager;
 import nl.aniketic.survival.engine.gamestate.GameObject;
 import nl.aniketic.survival.engine.gamestate.GameStateManager;
 import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
+import nl.aniketic.survival.game.entity.DoorObject;
 import nl.aniketic.survival.game.entity.Player;
 import nl.aniketic.survival.game.entity.Zombie;
 import nl.aniketic.survival.game.level.LevelManager;
@@ -32,18 +33,22 @@ public class SurvivalGameStateManager extends GameStateManager {
     private void startNewGame() {
         levelManager = createLevelManager();
         MapLoader.Entities entities = MapLoader.loadEntities("/map/entities01.json");
+        if (entities == null) {
+            throw new IllegalStateException("Could not load entities.");
+        }
 
         keyController = new KeyController(levelManager);
         keyController.loadEntity(24, 14);
 
         doorController = new DoorController(levelManager);
-        doorController.loadEntity(26, 14);
+        entities.getDoors().forEach(door -> doorController.loadEntity(door.getWorldX(), door.getWorldY()));
 
         zombieController = new ZombieController(this, levelManager);
         entities.getZombies().forEach(zombie -> zombieController.loadEntity(zombie.getWorldX(), zombie.getWorldY()));
 
         playerController = new PlayerController(this, levelManager);
-        playerController.loadEntity(23, 19);
+        MapLoader.Entity player = entities.getPlayer();
+        playerController.loadEntity(player.getWorldX(), player.getWorldY());
     }
 
     private LevelManager createLevelManager() {
@@ -85,7 +90,7 @@ public class SurvivalGameStateManager extends GameStateManager {
     public void updatePlayerOffset(Player player) {
         levelManager.setOffset(player.getWorldX(), player.getWorldY());
         keyController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
-        doorController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
+        doorController.getEntities().forEach(door -> door.setOffset(player.getWorldX(), player.getWorldY()));
         zombieController.getEntities().forEach(zombie -> zombie.setOffset(player.getWorldX(), player.getWorldY()));
         playerController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
     }
@@ -110,5 +115,15 @@ public class SurvivalGameStateManager extends GameStateManager {
         }
 
         zombiesToCleanup.forEach(zombie -> zombieController.removeEntity(zombie));
+    }
+
+    public boolean collisionWithDoor(Rectangle collisionBody) {
+        for (DoorObject door : doorController.getEntities()) {
+            if (collisionBody.intersects(door.getCollisionBody())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

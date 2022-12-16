@@ -102,7 +102,10 @@ public class PlayerController implements EntityController<Player> {
 
         player.setMoving(moving);
 
-        if (moving && !levelManager.isCollisionWithSolidNode(collisionBody)) {
+        boolean collisionWithSolidNode = levelManager.isCollisionWithSolidNode(collisionBody);
+        boolean collisionWithDoor = survivalGameStateManager.collisionWithDoor(collisionBody);
+
+        if (moving && !collisionWithSolidNode && !collisionWithDoor) {
             player.setWorldX(potentialWorldX);
             player.setWorldY(potentialWorldY);
             setNode(levelManager, player);
