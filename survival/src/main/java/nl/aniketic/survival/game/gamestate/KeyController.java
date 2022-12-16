@@ -35,6 +35,11 @@ public class KeyController implements EntityController<KeyObject> {
     }
 
     @Override
+    public void removeEntity(KeyObject entity) {
+
+    }
+
+    @Override
     public List<KeyObject> getEntities() {
         return null;
     }

@@ -17,6 +17,8 @@ public interface EntityController<T> {
 
     T getEntity();
 
+    void removeEntity(T entity);
+
     List<T> getEntities();
 
     default void setNode(LevelManager levelManager, BaseEntity entity) {

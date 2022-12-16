@@ -5,9 +5,14 @@ import nl.aniketic.survival.engine.gamestate.GameObject;
 import nl.aniketic.survival.engine.gamestate.GameStateManager;
 import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
 import nl.aniketic.survival.game.entity.Player;
+import nl.aniketic.survival.game.entity.Zombie;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.MapLoader;
 import nl.aniketic.survival.game.level.Node;
+
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SurvivalGameStateManager extends GameStateManager {
 
@@ -81,9 +86,28 @@ public class SurvivalGameStateManager extends GameStateManager {
         keyController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
         doorController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
         zombieController.getEntities().forEach(zombie -> zombie.setOffset(player.getWorldX(), player.getWorldY()));
+        playerController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
     }
 
     public Node getPlayerPosition() {
         return playerController.getEntity().getPosition();
+    }
+
+    public void processBatHit(Rectangle batHitBox) {
+        System.out.println("WACK!");
+        List<Zombie> zombiesToCleanup = new ArrayList<>();
+
+        for (Zombie zombie : zombieController.getEntities()) {
+            if (batHitBox.intersects(zombie.getCollisionBody())) {
+                System.out.println("OUCH!");
+                zombie.setCurrentHitPoints(zombie.getCurrentHitPoints() - 50);
+
+                if (zombie.getCurrentHitPoints() <= 0) {
+                    zombiesToCleanup.add(zombie);
+                }
+            }
+        }
+
+        zombiesToCleanup.forEach(zombie -> zombieController.removeEntity(zombie));
     }
 }

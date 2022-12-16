@@ -2,13 +2,11 @@ package nl.aniketic.survival.game.level;
 
 import nl.aniketic.survival.engine.display.PanelComponent;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_HEIGHT;
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_WIDTH;
@@ -49,12 +47,12 @@ public class LevelManager implements PanelComponent {
                     && nodeY + nodeSize >= 0 && nodeY <= SCREEN_HEIGHT) {
                 g2.drawImage(image, nodeX, nodeY, null);
 
-                Color debugColor = node.getDebugColor();
-                if (debugColor != null) {
-                    g2.setColor(debugColor);
-                    g2.fillRect(nodeX, nodeY, nodeSize, nodeSize);
-                    node.setDebugColor(null);
-                }
+//                Color debugColor = node.getDebugColor();
+//                if (debugColor != null) {
+//                    g2.setColor(debugColor);
+//                    g2.fillRect(nodeX, nodeY, nodeSize, nodeSize);
+//                    node.setDebugColor(null);
+//                }
             }
         }
     }

@@ -16,6 +16,9 @@ public class PlayerController implements EntityController<Player> {
 
     private Player player;
 
+    private int batCooldown = 120;
+    private int currentBatCooldownCount = batCooldown;
+
     public PlayerController(SurvivalGameStateManager survivalGameStateManager,
                             LevelManager levelManager) {
         this.survivalGameStateManager = survivalGameStateManager;
@@ -36,11 +39,25 @@ public class PlayerController implements EntityController<Player> {
     public void update() {
         updatePlayer();
         survivalGameStateManager.updatePlayerOffset(player);
+
+        if (Key.SPACE.isPressed() && currentBatCooldownCount >= batCooldown) {
+            currentBatCooldownCount = 0;
+            survivalGameStateManager.processBatHit(player.getBatHitBox());
+        }
+
+        if (currentBatCooldownCount < batCooldown) {
+            currentBatCooldownCount++;
+        }
     }
 
     @Override
     public Player getEntity() {
         return player;
+    }
+
+    @Override
+    public void removeEntity(Player entity) {
+
     }
 
     @Override

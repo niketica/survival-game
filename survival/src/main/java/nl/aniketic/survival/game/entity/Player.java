@@ -5,13 +5,18 @@ import nl.aniketic.survival.game.controls.Key;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Player extends BaseEntity {
 
     private BufferedImage[] batSpritesLeft;
     private BufferedImage[] batSpritesRight;
+    private BufferedImage[] batEffectSpritesRight;
+    private BufferedImage[] batEffectSpritesLeft;
     private int currentBatIndex;
+
+    private Rectangle batHitBox;
 
     public Player() {
         loadPlayerFrames();
@@ -19,6 +24,7 @@ public class Player extends BaseEntity {
         maxHitPoints = 100;
         currentHitPoints = maxHitPoints;
         currentBatIndex = 4;
+        batHitBox = new Rectangle(0, 0, 64, 64);
     }
 
     private void loadPlayerFrames() {
@@ -42,20 +48,40 @@ public class Player extends BaseEntity {
         BufferedImage bat3 = loadImage("/entity/soldier/soldier_bat_3.png");
         BufferedImage bat4 = loadImage("/entity/soldier/soldier_bat_4.png");
         batSpritesRight = new BufferedImage[4];
-        batSpritesRight[0] = bat1;
-        batSpritesRight[1] = bat2;
-        batSpritesRight[2] = bat3;
-        batSpritesRight[3] = bat4;
+        batSpritesRight[0] = bat2;
+        batSpritesRight[1] = bat4;
+        batSpritesRight[2] = bat4;
+        batSpritesRight[3] = bat1;
 
         BufferedImage bat5 = loadImage("/entity/soldier/soldier_bat_5.png");
         BufferedImage bat6 = loadImage("/entity/soldier/soldier_bat_6.png");
         BufferedImage bat7 = loadImage("/entity/soldier/soldier_bat_7.png");
         BufferedImage bat8 = loadImage("/entity/soldier/soldier_bat_8.png");
         batSpritesLeft = new BufferedImage[4];
-        batSpritesLeft[0] = bat5;
-        batSpritesLeft[1] = bat6;
-        batSpritesLeft[2] = bat7;
-        batSpritesLeft[3] = bat8;
+        batSpritesLeft[0] = bat6;
+        batSpritesLeft[1] = bat8;
+        batSpritesLeft[2] = bat8;
+        batSpritesLeft[3] = bat5;
+
+        BufferedImage batFx1 = loadImage("/effects/bat/bat_effect_1.png");
+        BufferedImage batFx2 = loadImage("/effects/bat/bat_effect_2.png");
+        BufferedImage batFx3 = loadImage("/effects/bat/bat_effect_3.png");
+        BufferedImage batFx4 = loadImage("/effects/bat/bat_effect_4.png");
+        batEffectSpritesRight = new BufferedImage[4];
+        batEffectSpritesRight[0] = batFx1;
+        batEffectSpritesRight[1] = batFx2;
+        batEffectSpritesRight[2] = batFx3;
+        batEffectSpritesRight[3] = batFx4;
+
+        BufferedImage batFx5 = loadImage("/effects/bat/bat_effect_5.png");
+        BufferedImage batFx6 = loadImage("/effects/bat/bat_effect_6.png");
+        BufferedImage batFx7 = loadImage("/effects/bat/bat_effect_7.png");
+        BufferedImage batFx8 = loadImage("/effects/bat/bat_effect_8.png");
+        batEffectSpritesLeft = new BufferedImage[4];
+        batEffectSpritesLeft[0] = batFx5;
+        batEffectSpritesLeft[1] = batFx6;
+        batEffectSpritesLeft[2] = batFx7;
+        batEffectSpritesLeft[3] = batFx8;
     }
 
     @Override
@@ -66,6 +92,20 @@ public class Player extends BaseEntity {
             return;
         }
         g2.drawImage(getCurrentSprite(), CENTER_X, CENTER_Y, null);
+
+        if (currentBatIndex < 4) {
+//            paintWithPlayerOffset(g2, getBatHitBox());
+            BufferedImage batFx;
+            int xOffset;
+            if (direction == Direction.LEFT) {
+                batFx = batEffectSpritesLeft[currentBatIndex];
+                xOffset = -collisionBody.width;
+            } else {
+                batFx = batEffectSpritesRight[currentBatIndex];
+                xOffset = collisionBody.width;
+            }
+            g2.drawImage(batFx, CENTER_X + xOffset, CENTER_Y, null);
+        }
     }
 
     @Override
@@ -75,20 +115,19 @@ public class Player extends BaseEntity {
         if (Key.SPACE.isPressed()) {
             if (currentBatIndex >= 3) {
                 currentBatIndex = 0;
-                System.out.println("WACK!");
             }
         }
     }
 
     @Override
     protected BufferedImage getCurrentSprite() {
-        if (currentBatIndex <= 3) {
-            if (direction == Direction.LEFT) {
-                return batSpritesLeft[currentBatIndex];
-            } else {
-                return batSpritesRight[currentBatIndex];
-            }
-        }
+//        if (currentBatIndex <= 3) {
+//            if (direction == Direction.LEFT) {
+//                return batSpritesLeft[currentBatIndex];
+//            } else {
+//                return batSpritesRight[currentBatIndex];
+//            }
+//        }
 
         return super.getCurrentSprite();
     }
@@ -118,11 +157,23 @@ public class Player extends BaseEntity {
 
         double percentage;
         if (currentHitPoints > 0) {
-            percentage = (double)currentHitPoints / maxHitPoints;
+            percentage = (double) currentHitPoints / maxHitPoints;
         } else {
             percentage = 0;
         }
 
         g2.fillRect(hitBoxX, hitBoxY, (int) (64 * percentage), 10);
+    }
+
+    public Rectangle getBatHitBox() {
+        batHitBox.y = worldY;
+
+        if (direction == Direction.LEFT) {
+            batHitBox.x = worldX - batHitBox.width + collisionOffset;
+        } else {
+            batHitBox.x = worldX + collisionBody.width;
+        }
+
+        return new Rectangle(batHitBox);
     }
 }

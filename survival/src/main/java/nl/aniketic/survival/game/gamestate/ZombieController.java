@@ -29,10 +29,14 @@ public class ZombieController implements EntityController<Zombie> {
 
     @Override
     public void loadEntity(int x, int y) {
+        Node node = levelManager.getNode(x, y);
+        if (node == null) {
+            return;
+        }
+
         Zombie zombie = new Zombie();
         survivalGameStateManager.addGameObject(zombie);
 
-        Node node = levelManager.getNode(x, y);
         zombie.setWorldPosition(node);
         zombie.activate();
 
@@ -44,9 +48,7 @@ public class ZombieController implements EntityController<Zombie> {
         Node playerPosition = survivalGameStateManager.getPlayerPosition();
         zombies.forEach(zombie -> moveZombie(zombie, playerPosition));
         if (zombies.isEmpty()) {
-            int x = playerPosition.getX() + 20;
-            int y = playerPosition.getY();
-            loadEntity(x, y);
+            loadEntity(43, 19);
         }
     }
 
@@ -146,6 +148,13 @@ public class ZombieController implements EntityController<Zombie> {
     @Override
     public Zombie getEntity() {
         return null;
+    }
+
+    @Override
+    public void removeEntity(Zombie entity) {
+        survivalGameStateManager.removeGameObject(entity);
+        entity.deactivate();
+        zombies.remove(entity);
     }
 
     @Override

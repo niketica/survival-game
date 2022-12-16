@@ -52,7 +52,18 @@ public class BaseEntity implements GameObject, PanelComponent {
         int nodeSize = TILE_SIZE;
         if (nodeX + nodeSize >= 0 && nodeX <= SCREEN_WIDTH
                 && nodeY + nodeSize >= 0 && nodeY <= SCREEN_HEIGHT) {
-            g2.drawImage(getCurrentSprite(), nodeX, nodeY, null);
+            BufferedImage image = getCurrentSprite();
+            g2.drawImage(image, nodeX, nodeY, null);
+        }
+    }
+
+    protected void paintWithPlayerOffset(Graphics2D g2, Rectangle rectangle) {
+        int nodeX = rectangle.x - offsetX;
+        int nodeY = rectangle.y - offsetY;
+        int nodeSize = TILE_SIZE;
+        if (nodeX + nodeSize >= 0 && nodeX <= SCREEN_WIDTH
+                && nodeY + nodeSize >= 0 && nodeY <= SCREEN_HEIGHT) {
+            g2.fillRect(nodeX, nodeY, rectangle.width, rectangle.height);
         }
     }
 
@@ -198,7 +209,6 @@ public class BaseEntity implements GameObject, PanelComponent {
         if (currentIFrameCount >= iFrames) {
             this.currentHitPoints = hitPoints;
             currentIFrameCount = 0;
-            System.out.println("BRAINS!!!");
         }
     }
 

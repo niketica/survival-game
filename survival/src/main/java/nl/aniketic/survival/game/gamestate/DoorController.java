@@ -35,6 +35,11 @@ public class DoorController implements EntityController<DoorObject> {
     }
 
     @Override
+    public void removeEntity(DoorObject entity) {
+
+    }
+
+    @Override
     public List<DoorObject> getEntities() {
         return null;
     }
