@@ -28,7 +28,6 @@ public class TileImageManager {
         BufferedImage wall = loadImage("/tile/wall.png");
         BufferedImage water = loadImage("/tile/water.png");
         BufferedImage tree = loadImage("/tile/tree.png");
-        BufferedImage stone = loadImage("/tile/stone.png");
         BufferedImage brick1 = loadImage("/tile/tile_brick_1.png");
         tileMap.put(TileType.GRASS, grass);
         tileMap.put(TileType.EARTH, earth);
@@ -36,7 +35,6 @@ public class TileImageManager {
         tileMap.put(TileType.WALL, wall);
         tileMap.put(TileType.WATER, water);
         tileMap.put(TileType.TREE, tree);
-        tileMap.put(TileType.STONE, stone);
         tileMap.put(TileType.BRICK, brick1);
     }
 

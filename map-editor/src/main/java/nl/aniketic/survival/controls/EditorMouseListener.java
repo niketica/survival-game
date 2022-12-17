@@ -1,6 +1,7 @@
 package nl.aniketic.survival.controls;
 
 import nl.aniketic.survival.game.level.Node;
+import nl.aniketic.survival.mapeditor.AbstractEditorItem;
 import nl.aniketic.survival.mapeditor.Button;
 import nl.aniketic.survival.mapeditor.EditorTile;
 import nl.aniketic.survival.mapeditor.Map;
@@ -24,13 +25,13 @@ public class EditorMouseListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        checkEditorTileClicked(e);
+        checkEditorItemClicked(e);
         checkButtonClicked(e);
         checkMapTileClicked(e);
     }
 
-    private void checkEditorTileClicked(MouseEvent e) {
-        for (EditorTile editorTile : userInterface.getEditorTiles()) {
+    private void checkEditorItemClicked(MouseEvent e) {
+        for (AbstractEditorItem editorTile : userInterface.getEditorItem()) {
             int mouseX = e.getX();
             int mouseY = e.getY();
 
@@ -42,7 +43,7 @@ public class EditorMouseListener implements MouseListener {
 
             boolean clicked = mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2;
             if (clicked && !editorTile.isSelected()) {
-                userInterface.getEditorTiles().forEach(v -> v.setSelected(false));
+                userInterface.getEditorItem().forEach(v -> v.setSelected(false));
                 editorTile.setSelected(true);
                 break;
             }
@@ -67,12 +68,16 @@ public class EditorMouseListener implements MouseListener {
     }
 
     private void checkMapTileClicked(MouseEvent e) {
-        EditorTile selectedTile = userInterface.getSelectedTile();
-        if (e.getY() >= SCREEN_HEIGHT - TILE_SIZE * 3 || selectedTile == null) {
+        AbstractEditorItem selectedItem = userInterface.getSelectedItem();
+        if (e.getY() >= SCREEN_HEIGHT - TILE_SIZE * 3 || selectedItem == null) {
             return;
         }
         Node clickedNode = map.getClickedNode(e.getX(), e.getY());
-        clickedNode.setTileType(selectedTile.getTileType());
+
+        if (selectedItem instanceof EditorTile) {
+            EditorTile editorTile = (EditorTile) selectedItem;
+            clickedNode.setTileType(editorTile.getTileType());
+        }
     }
 
     @Override
