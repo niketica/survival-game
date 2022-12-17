@@ -44,7 +44,7 @@ public class UserInterface implements PanelComponent, GameObject {
         int height = 40;
         int x = SCREEN_WIDTH - width - 20;
         int y = SCREEN_HEIGHT - height - 20;
-        buttons.add(new Button(x, y, width, height, "EXPORT"));
+        buttons.add(new Button(x, y, width, height, ButtonValue.EXPORT));
     }
 
     @Override
@@ -138,5 +138,9 @@ public class UserInterface implements PanelComponent, GameObject {
 
     public List<Button> getButtons() {
         return buttons;
+    }
+
+    public EditorTile getSelectedTile() {
+        return selectedTile;
     }
 }

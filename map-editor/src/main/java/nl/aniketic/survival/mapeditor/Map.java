@@ -99,4 +99,18 @@ public class Map implements PanelComponent, GameObject {
             g2.drawImage(image, x, y, null);
         }
     }
+
+    public Node getClickedNode(int x, int y) {
+        return nodes.stream().filter(n -> {
+            int x1 = n.getWorldX() + offsetX;
+            int x2 = x1 + TILE_SIZE;
+            int y1 = n.getWorldY() + offsetY;
+            int y2 = y1 + TILE_SIZE;
+            return x >= x1 && x <= x2 && y >= y1 && y <= y2;
+        }).findAny().orElse(null);
+    }
+
+    public List<Node> getNodes() {
+        return nodes;
+    }
 }

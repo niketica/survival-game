@@ -1,24 +1,32 @@
 package nl.aniketic.survival.controls;
 
+import nl.aniketic.survival.game.level.Node;
 import nl.aniketic.survival.mapeditor.Button;
 import nl.aniketic.survival.mapeditor.EditorTile;
+import nl.aniketic.survival.mapeditor.Map;
 import nl.aniketic.survival.mapeditor.UserInterface;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_HEIGHT;
+import static nl.aniketic.survival.game.common.SurvivalGameConstants.TILE_SIZE;
+
 public class EditorMouseListener implements MouseListener {
 
     private final UserInterface userInterface;
+    private final Map map;
 
-    public EditorMouseListener(UserInterface userInterface) {
+    public EditorMouseListener(UserInterface userInterface, Map map) {
         this.userInterface = userInterface;
+        this.map = map;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         checkEditorTileClicked(e);
         checkButtonClicked(e);
+        checkMapTileClicked(e);
     }
 
     private void checkEditorTileClicked(MouseEvent e) {
@@ -56,6 +64,15 @@ public class EditorMouseListener implements MouseListener {
             boolean clicked = mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2;
             button.setClicked(clicked);
         }
+    }
+
+    private void checkMapTileClicked(MouseEvent e) {
+        EditorTile selectedTile = userInterface.getSelectedTile();
+        if (e.getY() >= SCREEN_HEIGHT - TILE_SIZE * 3 || selectedTile == null) {
+            return;
+        }
+        Node clickedNode = map.getClickedNode(e.getX(), e.getY());
+        clickedNode.setTileType(selectedTile.getTileType());
     }
 
     @Override
