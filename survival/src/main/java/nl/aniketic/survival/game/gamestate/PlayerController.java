@@ -7,6 +7,8 @@ import nl.aniketic.survival.game.entity.DoorObject;
 import nl.aniketic.survival.game.entity.Player;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.Node;
+import nl.aniketic.survival.game.sound.SoundControllerUtil;
+import nl.aniketic.survival.game.sound.SoundFx;
 
 import java.awt.Rectangle;
 import java.util.List;
@@ -125,6 +127,7 @@ public class PlayerController implements EntityController<Player> {
             crowbarsInInv--;
             collisionWithDoor = false;
             survivalGameStateManager.removeDoor(door);
+            SoundControllerUtil.play(SoundFx.DOOR);
         }
 
         if (moving && !collisionWithSolidNode && !collisionWithDoor) {
