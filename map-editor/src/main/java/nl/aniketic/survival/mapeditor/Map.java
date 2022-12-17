@@ -21,6 +21,7 @@ public class Map implements PanelComponent, GameObject {
 
     private final TileImageManager tileImageManager;
     private final List<Node> nodes;
+    private List<EditorEntity> entities;
 
     private final int keyInputCount = 1;
     private int currentKeyInputCount = keyInputCount;
@@ -32,6 +33,7 @@ public class Map implements PanelComponent, GameObject {
     public Map(TileImageManager tileImageManager) {
         this.tileImageManager = tileImageManager;
         nodes = new ArrayList<>();
+        entities = new ArrayList<>();
     }
 
     public void loadMap() {
@@ -97,6 +99,12 @@ public class Map implements PanelComponent, GameObject {
             BufferedImage image = tileImageManager.getTileImage(node.getTileType());
             g2.drawImage(image, x, y, null);
         }
+
+        for (EditorEntity entity : entities) {
+            int x = entity.getWorldX() + offsetX;
+            int y = entity.getWorldY() + offsetY;
+            g2.drawImage(entity.getImage(), x, y, null);
+        }
     }
 
     public Node getClickedNode(int x, int y) {
@@ -111,5 +119,19 @@ public class Map implements PanelComponent, GameObject {
 
     public List<Node> getNodes() {
         return nodes;
+    }
+
+    public Node getNode(int x, int y) {
+        return nodes.stream()
+                .filter(n -> n.getX() == x && n.getY() == y)
+                .findAny().orElse(null);
+    }
+
+    public List<EditorEntity> getEntities() {
+        return entities;
+    }
+
+    public void addEntity(EditorEntity entity) {
+        entities.add(entity);
     }
 }

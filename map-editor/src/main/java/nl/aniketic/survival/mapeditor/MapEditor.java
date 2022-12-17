@@ -4,6 +4,7 @@ import nl.aniketic.survival.controls.EditorKeyListener;
 import nl.aniketic.survival.controls.EditorMouseListener;
 import nl.aniketic.survival.engine.display.DisplayManager;
 import nl.aniketic.survival.engine.gamestate.GameStateManager;
+import nl.aniketic.survival.game.level.MapLoader;
 import nl.aniketic.survival.game.level.Node;
 import nl.aniketic.survival.game.level.TileImageManager;
 
@@ -37,6 +38,39 @@ public class MapEditor extends GameStateManager {
         gameObjects.add(userInterface);
 
         DisplayManager.addMouseListener(new EditorMouseListener(userInterface, map));
+
+        loadEntities();
+    }
+
+    private void loadEntities() {
+        MapLoader.Entities loadedEntities = MapLoader.loadEntities("maps/entities01.json");
+        if (loadedEntities == null) {
+            throw new IllegalStateException("Could not load entities.");
+        }
+        MapLoader.Entity player = loadedEntities.getPlayer();
+        if (player != null) {
+            map.addEntity(createEditorEntity(player, EntityValue.PLAYER));
+        }
+
+        for (MapLoader.Entity entity : loadedEntities.getCrowbars()) {
+            map.addEntity(createEditorEntity(entity, EntityValue.CROWBAR));
+        }
+
+        for (MapLoader.Entity entity : loadedEntities.getDoors()) {
+            map.addEntity(createEditorEntity(entity, EntityValue.DOOR));
+        }
+
+        for (MapLoader.Entity entity : loadedEntities.getZombies()) {
+            map.addEntity(createEditorEntity(entity, EntityValue.ZOMBIE));
+        }
+    }
+
+    private EditorEntity createEditorEntity(MapLoader.Entity player, EntityValue entityValue) {
+        Node node = map.getNode(player.getWorldX(), player.getWorldY());
+        EditorEntity entity = new EditorEntity(player.getWorldX(), player.getWorldY(), entityValue);
+        entity.setWorldX(node.getWorldX());
+        entity.setWorldY(node.getWorldY());
+        return entity;
     }
 
     @Override
