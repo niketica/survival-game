@@ -1,5 +1,6 @@
 package nl.aniketic.survival.mapeditor;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.aniketic.survival.controls.EditorKeyListener;
 import nl.aniketic.survival.controls.EditorMouseListener;
 import nl.aniketic.survival.engine.display.DisplayManager;
@@ -9,6 +10,7 @@ import nl.aniketic.survival.game.level.Node;
 import nl.aniketic.survival.game.level.TileImageManager;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,15 +82,7 @@ public class MapEditor extends GameStateManager {
                 button.setClicked(false);
 
                 if (button.getButtonValue() == ButtonValue.EXPORT) {
-                    String stringMap = mapNodesToString();
-                    try {
-                        BufferedWriter writer = new BufferedWriter(new FileWriter("maps/map01.txt"));
-                        writer.write(stringMap);
-                        writer.close();
-                        System.out.println("Saved map!");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    exportLevel();
                 }
             }
         }
@@ -126,5 +120,58 @@ public class MapEditor extends GameStateManager {
     @Override
     protected void updateEndGameState() {
 
+    }
+
+    private void exportLevel() {
+        saveMap();
+        saveEntities();
+    }
+
+    private void saveMap() {
+        String stringMap = mapNodesToString();
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("maps/map01.txt"));
+            writer.write(stringMap);
+            writer.close();
+            System.out.println("Saved map!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveEntities() {
+        MapLoader.Entities entities = new MapLoader.Entities();
+
+        List<EditorEntity> mapEntities = map.getEntities();
+        for (EditorEntity editorEntity : mapEntities) {
+            MapLoader.Entity entity = new MapLoader.Entity();
+            entity.setWorldX(editorEntity.getX());
+            entity.setWorldY(editorEntity.getY());
+            EntityValue entityValue = editorEntity.getEntity();
+            switch (entityValue) {
+                case PLAYER:
+                    entities.setPlayer(entity);
+                    break;
+                case DOOR:
+                    entities.getDoors().add(entity);
+                    break;
+                case CROWBAR:
+                    entities.getCrowbars().add(entity);
+                    break;
+                case ZOMBIE:
+                    entities.getZombies().add(entity);
+                    break;
+            }
+        }
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            objectMapper.writeValue(new File("maps/entities01.json"), entities);
+            System.out.println("Saved entities!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
