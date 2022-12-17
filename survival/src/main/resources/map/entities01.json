@@ -15,11 +15,19 @@
     {
       "worldX": 43,
       "worldY": 24
+    },
+    {
+      "worldX": 19,
+      "worldY": 31
     }
   ],
   "doors": [
     {
       "worldX": 8,
+      "worldY": 28
+    },
+    {
+      "worldX": 17,
       "worldY": 28
     }
   ],

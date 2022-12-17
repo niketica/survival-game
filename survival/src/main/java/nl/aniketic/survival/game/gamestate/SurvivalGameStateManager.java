@@ -22,7 +22,6 @@ public class SurvivalGameStateManager extends GameStateManager {
     private PlayerController playerController;
     private ZombieController zombieController;
     private DoorController doorController;
-    private KeyController keyController;
     private CrowbarController crowbarController;
 
     @Override
@@ -38,9 +37,6 @@ public class SurvivalGameStateManager extends GameStateManager {
         if (entities == null) {
             throw new IllegalStateException("Could not load entities.");
         }
-
-        keyController = new KeyController(levelManager);
-        keyController.loadEntity(24, 14);
 
         doorController = new DoorController(levelManager);
         entities.getDoors().forEach(door -> doorController.loadEntity(door.getWorldX(), door.getWorldY()));
@@ -94,7 +90,6 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     public void updatePlayerOffset(Player player) {
         levelManager.setOffset(player.getWorldX(), player.getWorldY());
-        keyController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
         doorController.getEntities().forEach(door -> door.setOffset(player.getWorldX(), player.getWorldY()));
         zombieController.getEntities().forEach(zombie -> zombie.setOffset(player.getWorldX(), player.getWorldY()));
         crowbarController.getEntities().forEach(crowbar -> crowbar.setOffset(player.getWorldX(), player.getWorldY()));
