@@ -134,4 +134,8 @@ public class Map implements PanelComponent, GameObject {
     public void addEntity(EditorEntity entity) {
         entities.add(entity);
     }
+
+    public void removeEntity(EditorEntity entity) {
+        entities.remove(entity);
+    }
 }

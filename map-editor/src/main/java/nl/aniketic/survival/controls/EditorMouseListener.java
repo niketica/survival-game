@@ -3,12 +3,15 @@ package nl.aniketic.survival.controls;
 import nl.aniketic.survival.game.level.Node;
 import nl.aniketic.survival.mapeditor.AbstractEditorItem;
 import nl.aniketic.survival.mapeditor.Button;
+import nl.aniketic.survival.mapeditor.EditorEntity;
 import nl.aniketic.survival.mapeditor.EditorTile;
+import nl.aniketic.survival.mapeditor.EntityValue;
 import nl.aniketic.survival.mapeditor.Map;
 import nl.aniketic.survival.mapeditor.UserInterface;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.SCREEN_HEIGHT;
 import static nl.aniketic.survival.game.common.SurvivalGameConstants.TILE_SIZE;
@@ -77,6 +80,23 @@ public class EditorMouseListener implements MouseListener {
         if (selectedItem instanceof EditorTile) {
             EditorTile editorTile = (EditorTile) selectedItem;
             clickedNode.setTileType(editorTile.getTileType());
+        } else if (selectedItem instanceof EditorEntity) {
+            EditorEntity editorEntity = (EditorEntity) selectedItem;
+
+            List<EditorEntity> mapEntities = map.getEntities();
+
+            if (editorEntity.getEntity() == EntityValue.PLAYER) {
+                EditorEntity player = mapEntities.stream()
+                        .filter(entity -> entity.getEntity() == EntityValue.PLAYER)
+                        .findAny().orElse(null);
+                map.removeEntity(player);
+            }
+
+            EditorEntity newEditorEntity =
+                    new EditorEntity(clickedNode.getX(), clickedNode.getY(), editorEntity.getEntity());
+            newEditorEntity.setWorldX(clickedNode.getWorldX());
+            newEditorEntity.setWorldY(clickedNode.getWorldY());
+            map.addEntity(newEditorEntity);
         }
     }
 
