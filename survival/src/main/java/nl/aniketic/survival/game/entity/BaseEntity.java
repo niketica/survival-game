@@ -45,6 +45,11 @@ public class BaseEntity implements GameObject, PanelComponent {
     protected int iFrames = 120;
     protected int currentIFrameCount = iFrames;
 
+    protected boolean knockback;
+    protected Direction knockbackDirection;
+    protected int knockbackFrames = 30;
+    protected int currentKnockbackFrame = 0;
+
     @Override
     public void paintComponent(Graphics2D g2) {
         int nodeX = worldX - offsetX;
@@ -228,5 +233,26 @@ public class BaseEntity implements GameObject, PanelComponent {
 
     public int getCollisionOffset() {
         return collisionOffset;
+    }
+
+    public boolean isKnockback() {
+        return knockback;
+    }
+
+    public void setKnockback(Direction knockbackDirection) {
+        this.knockbackDirection = knockbackDirection;
+        this.knockback = true;
+        this.currentKnockbackFrame = 0;
+    }
+
+    public void updateKnockbackFrame() {
+        currentKnockbackFrame++;
+        if (currentKnockbackFrame >= knockbackFrames) {
+            knockback = false;
+        }
+    }
+
+    public Direction getKnockbackDirection() {
+        return knockbackDirection;
     }
 }

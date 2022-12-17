@@ -3,6 +3,7 @@ package nl.aniketic.survival.game.gamestate;
 import nl.aniketic.survival.engine.display.DisplayManager;
 import nl.aniketic.survival.engine.gamestate.GameObject;
 import nl.aniketic.survival.engine.gamestate.GameStateManager;
+import nl.aniketic.survival.game.common.Direction;
 import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
 import nl.aniketic.survival.game.entity.Crowbar;
 import nl.aniketic.survival.game.entity.DoorObject;
@@ -15,6 +16,7 @@ import nl.aniketic.survival.game.level.Node;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SurvivalGameStateManager extends GameStateManager {
 
@@ -42,7 +44,8 @@ public class SurvivalGameStateManager extends GameStateManager {
         entities.getDoors().forEach(door -> doorController.loadEntity(door.getWorldX(), door.getWorldY()));
 
         crowbarController = new CrowbarController(levelManager);
-        entities.getCrowbars().forEach(crowbar -> crowbarController.loadEntity(crowbar.getWorldX(), crowbar.getWorldY()));
+        entities.getCrowbars()
+                .forEach(crowbar -> crowbarController.loadEntity(crowbar.getWorldX(), crowbar.getWorldY()));
 
         zombieController = new ZombieController(this, levelManager);
         entities.getZombies().forEach(zombie -> zombieController.loadEntity(zombie.getWorldX(), zombie.getWorldY()));
@@ -104,10 +107,15 @@ public class SurvivalGameStateManager extends GameStateManager {
         System.out.println("WACK!");
         List<Zombie> zombiesToCleanup = new ArrayList<>();
 
-        for (Zombie zombie : zombieController.getEntities()) {
+        for (Zombie zombie : zombieController.getEntities().stream().filter(z -> !z.isKnockback())
+                .collect(Collectors.toList())) {
             if (batHitBox.intersects(zombie.getCollisionBody())) {
                 System.out.println("OUCH!");
                 zombie.setCurrentHitPoints(zombie.getCurrentHitPoints() - 50);
+
+                Direction knockbackDirection = getKnockbackDirection(batHitBox, zombie);
+                zombie.setKnockback(knockbackDirection);
+                zombie.setMoving(false);
 
                 if (zombie.getCurrentHitPoints() <= 0) {
                     zombiesToCleanup.add(zombie);
@@ -116,6 +124,16 @@ public class SurvivalGameStateManager extends GameStateManager {
         }
 
         zombiesToCleanup.forEach(zombie -> zombieController.removeEntity(zombie));
+    }
+
+    private Direction getKnockbackDirection(Rectangle batHitBox, Zombie zombie) {
+        Direction knockbackDirection;
+        if (batHitBox.x < zombie.getCollisionBody().x) {
+            knockbackDirection = Direction.RIGHT;
+        } else {
+            knockbackDirection = Direction.LEFT;
+        }
+        return knockbackDirection;
     }
 
     public DoorObject collisionWithDoor(Rectangle collisionBody) {

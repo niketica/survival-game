@@ -48,12 +48,22 @@ public class ZombieController implements EntityController<Zombie> {
     public void update() {
         Node playerPosition = survivalGameStateManager.getPlayerPosition();
         zombies.forEach(zombie -> moveZombie(zombie, playerPosition));
-//        if (zombies.isEmpty()) {
-//            loadEntity(43, 19);
-//        }
     }
 
     private void moveZombie(Zombie zombie, Node targetPosition) {
+        if (zombie.isKnockback()) {
+            zombie.updateKnockbackFrame();
+
+            int knockBackSpeed = 4;
+            if (zombie.getKnockbackDirection() == Direction.LEFT) {
+                zombie.setWorldX(zombie.getWorldX() - knockBackSpeed);
+            } else {
+                zombie.setWorldX(zombie.getWorldX() + knockBackSpeed);
+            }
+
+            return;
+        }
+
         Node zombiePosition = zombie.getPosition();
 
         int distance = zombiePosition.getDistance(targetPosition);
