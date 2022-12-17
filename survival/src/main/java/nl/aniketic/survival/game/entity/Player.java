@@ -1,7 +1,6 @@
 package nl.aniketic.survival.game.entity;
 
 import nl.aniketic.survival.game.common.Direction;
-import nl.aniketic.survival.game.controls.Key;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -24,7 +23,7 @@ public class Player extends BaseEntity {
         maxHitPoints = 100;
         currentHitPoints = maxHitPoints;
         currentBatIndex = 4;
-        batHitBox = new Rectangle(0, 0, 64, 64);
+        batHitBox = new Rectangle(0, 0, 32, 44);
     }
 
     private void loadPlayerFrames() {
@@ -118,14 +117,6 @@ public class Player extends BaseEntity {
 
     @Override
     protected BufferedImage getCurrentSprite() {
-//        if (currentBatIndex <= 3) {
-//            if (direction == Direction.LEFT) {
-//                return batSpritesLeft[currentBatIndex];
-//            } else {
-//                return batSpritesRight[currentBatIndex];
-//            }
-//        }
-
         return super.getCurrentSprite();
     }
 
@@ -163,7 +154,7 @@ public class Player extends BaseEntity {
     }
 
     public Rectangle getBatHitBox() {
-        batHitBox.y = worldY;
+        batHitBox.y = worldY + 20;
 
         if (direction == Direction.LEFT) {
             batHitBox.x = worldX - batHitBox.width + collisionOffset;

@@ -84,6 +84,9 @@ public class SurvivalGameStateManager extends GameStateManager {
                 pause = !pause;
                 System.out.println("Pause = " + pause);
             }
+            if (pause && Key.QUIT.isPressed()) {
+                System.exit(0);
+            }
         }
 
         if (pause) {
