@@ -4,6 +4,7 @@ import nl.aniketic.survival.controls.EditorKeyListener;
 import nl.aniketic.survival.controls.EditorMouseListener;
 import nl.aniketic.survival.engine.display.DisplayManager;
 import nl.aniketic.survival.engine.gamestate.GameStateManager;
+import nl.aniketic.survival.game.level.TileImageManager;
 
 public class MapEditor extends GameStateManager {
 
@@ -16,12 +17,14 @@ public class MapEditor extends GameStateManager {
         EditorKeyListener keyListener = new EditorKeyListener();
         DisplayManager.addKeyListener(keyListener);
 
-        Map map = new Map();
+        TileImageManager tileImageManager = new TileImageManager();
+
+        Map map = new Map(tileImageManager);
         map.loadMap(10, 10);
         map.activate();
         gameObjects.add(map);
 
-        userInterface = new UserInterface();
+        userInterface = new UserInterface(tileImageManager);
         userInterface.activate();
         gameObjects.add(userInterface);
 

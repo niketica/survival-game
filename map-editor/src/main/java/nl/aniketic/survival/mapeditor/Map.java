@@ -4,10 +4,14 @@ import nl.aniketic.survival.controls.EditorKeyListener;
 import nl.aniketic.survival.controls.Key;
 import nl.aniketic.survival.engine.display.PanelComponent;
 import nl.aniketic.survival.engine.gamestate.GameObject;
+import nl.aniketic.survival.game.level.MapLoader;
 import nl.aniketic.survival.game.level.Node;
+import nl.aniketic.survival.game.level.TileImageManager;
+import nl.aniketic.survival.game.level.TileType;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,23 +20,28 @@ import static nl.aniketic.survival.game.common.SurvivalGameConstants.TILE_SIZE;
 
 public class Map implements PanelComponent, GameObject {
 
+    private final TileImageManager tileImageManager;
     private final List<Node> nodes;
 
-    private final int keyInputCount = 10;
+    private final int keyInputCount = 1;
     private int currentKeyInputCount = keyInputCount;
 
     private final int offsetIncrementValue = 10;
     private int offsetX = 0;
     private int offsetY = 0;
 
-    public Map() {
+    public Map(TileImageManager tileImageManager) {
+        this.tileImageManager = tileImageManager;
         nodes = new ArrayList<>();
     }
 
     public void loadMap(int width, int height) {
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                Node node = new Node(x, y);
+        int[][] map = MapLoader.loadMap("/map/map01.txt");
+        for (int row = 0; row < map.length; row++) {
+            for (int col = 0; col < map[0].length; col++) {
+                int mapValue = map[row][col];
+                Node node = new Node(col, row);
+                node.setTileType(TileType.getByMapValue(mapValue));
                 nodes.add(node);
             }
         }
@@ -86,7 +95,8 @@ public class Map implements PanelComponent, GameObject {
         for (Node node : nodes) {
             int x = node.getX() * TILE_SIZE + offsetX;
             int y = node.getY() * TILE_SIZE + offsetY;
-            g2.drawRect(x, y, TILE_SIZE, TILE_SIZE);
+            BufferedImage image = tileImageManager.getTileImage(node.getTileType());
+            g2.drawImage(image, x, y, null);
         }
     }
 }

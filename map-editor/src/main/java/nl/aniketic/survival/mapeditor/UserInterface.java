@@ -1,12 +1,12 @@
 package nl.aniketic.survival.mapeditor;
 
-import nl.aniketic.survival.engine.display.DisplayManager;
 import nl.aniketic.survival.engine.display.PanelComponent;
 import nl.aniketic.survival.engine.gamestate.GameObject;
 import nl.aniketic.survival.game.level.TileImageManager;
 import nl.aniketic.survival.game.level.TileType;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -18,12 +18,16 @@ import static nl.aniketic.survival.game.common.SurvivalGameConstants.TILE_SIZE;
 
 public class UserInterface implements PanelComponent, GameObject {
 
+    private static final Font ARIAL_20 = new Font("Arial", Font.PLAIN, 20);
+
     private final TileImageManager tileImageManager;
     private final List<EditorTile> editorTiles;
     private EditorTile selectedTile;
 
-    public UserInterface() {
-        tileImageManager = new TileImageManager();
+    private List<Button> buttons;
+
+    public UserInterface(TileImageManager tileImageManager) {
+        this.tileImageManager = tileImageManager;
         editorTiles = new ArrayList<>();
 
         int offsetX = 20;
@@ -34,6 +38,13 @@ public class UserInterface implements PanelComponent, GameObject {
             int y = SCREEN_HEIGHT - offsetY;
             editorTiles.add(new EditorTile(tileTypes[i], x, y));
         }
+
+        buttons = new ArrayList<>();
+        int width = 100;
+        int height = 40;
+        int x = SCREEN_WIDTH - width - 20;
+        int y = SCREEN_HEIGHT - height - 20;
+        buttons.add(new Button(x, y, width, height, "EXPORT"));
     }
 
     @Override
@@ -56,6 +67,10 @@ public class UserInterface implements PanelComponent, GameObject {
         drawPanel(g2);
         drawSelectableTiles(g2);
         drawSelectedTile(g2);
+
+        for (Button button : buttons) {
+            drawButton(g2, button);
+        }
     }
 
     private void drawPanel(Graphics2D g2) {
@@ -102,5 +117,26 @@ public class UserInterface implements PanelComponent, GameObject {
 
     public List<EditorTile> getEditorTiles() {
         return editorTiles;
+    }
+
+    private void drawButton(Graphics2D g2, Button button) {
+        int x = button.getX();
+        int y = button.getY();
+        int width = button.getWidth();
+        int height = button.getHeight();
+        String text = button.getText();
+
+        g2.setColor(Color.GRAY);
+        g2.fillRect(x, y, width, height);
+        g2.setColor(Color.DARK_GRAY);
+        g2.drawRect(x, y, width, height);
+
+        g2.setFont(ARIAL_20);
+        g2.setColor(Color.BLACK);
+        g2.drawString(text, x + 10, y + height - 10);
+    }
+
+    public List<Button> getButtons() {
+        return buttons;
     }
 }

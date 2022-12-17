@@ -1,5 +1,6 @@
 package nl.aniketic.survival.controls;
 
+import nl.aniketic.survival.mapeditor.Button;
 import nl.aniketic.survival.mapeditor.EditorTile;
 import nl.aniketic.survival.mapeditor.UserInterface;
 
@@ -16,6 +17,11 @@ public class EditorMouseListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        checkEditorTileClicked(e);
+        checkButtonClicked(e);
+    }
+
+    private void checkEditorTileClicked(MouseEvent e) {
         for (EditorTile editorTile : userInterface.getEditorTiles()) {
             int mouseX = e.getX();
             int mouseY = e.getY();
@@ -26,8 +32,29 @@ public class EditorMouseListener implements MouseListener {
             int y1 = editorTile.getY();
             int y2 = editorTile.getY() + size;
 
-            boolean selected = mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2;
-            editorTile.setSelected(selected);
+            boolean clicked = mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2;
+            if (clicked && !editorTile.isSelected()) {
+                userInterface.getEditorTiles().forEach(v -> v.setSelected(false));
+                editorTile.setSelected(true);
+                break;
+            }
+        }
+    }
+
+    private void checkButtonClicked(MouseEvent e) {
+        for (Button button : userInterface.getButtons()) {
+            int mouseX = e.getX();
+            int mouseY = e.getY();
+
+            int width = button.getWidth();
+            int height = button.getHeight();
+            int x1 = button.getX();
+            int x2 = button.getX() + width;
+            int y1 = button.getY();
+            int y2 = button.getY() + height;
+
+            boolean clicked = mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2;
+            button.setClicked(clicked);
         }
     }
 
