@@ -94,6 +94,12 @@ public class BaseEntity implements GameObject, PanelComponent {
     }
 
     public void setPosition(Node position) {
+        if (this.getClass() == Player.class) {
+            if (this.position.getX() != position.getX() || this.position.getY() != position.getY()) {
+                System.out.println("Update position: [" + position.getX() + "," + position.getY() + "]");
+            }
+        }
+
         this.position = position;
     }
 
