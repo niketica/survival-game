@@ -92,7 +92,10 @@ public class Player extends BaseEntity {
             return;
         }
         g2.drawImage(getCurrentSprite(), CENTER_X, CENTER_Y, null);
+        drawBatFx(g2);
+    }
 
+    private void drawBatFx(Graphics2D g2) {
         if (currentBatIndex < 4) {
 //            paintWithPlayerOffset(g2, getBatHitBox());
             BufferedImage batFx;
@@ -111,12 +114,6 @@ public class Player extends BaseEntity {
     @Override
     public void update() {
         super.update();
-
-        if (Key.SPACE.isPressed()) {
-            if (currentBatIndex >= 3) {
-                currentBatIndex = 0;
-            }
-        }
     }
 
     @Override
@@ -175,5 +172,9 @@ public class Player extends BaseEntity {
         }
 
         return new Rectangle(batHitBox);
+    }
+
+    public void setCurrentBatIndex(int currentBatIndex) {
+        this.currentBatIndex = currentBatIndex;
     }
 }

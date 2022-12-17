@@ -43,17 +43,10 @@ public class PlayerController implements EntityController<Player> {
 
     @Override
     public void update() {
-        updatePlayer();
+        updateMovement();
         survivalGameStateManager.updatePlayerOffset(player);
-
-        if (Key.SPACE.isPressed() && currentBatCooldownCount >= batCooldown) {
-            currentBatCooldownCount = 0;
-            survivalGameStateManager.processBatHit(player.getBatHitBox());
-        }
-
-        if (currentBatCooldownCount < batCooldown) {
-            currentBatCooldownCount++;
-        }
+        checkCrowbarPickup();
+        checkBatAttack();
     }
 
     @Override
@@ -69,18 +62,6 @@ public class PlayerController implements EntityController<Player> {
     @Override
     public List<Player> getEntities() {
         return null;
-    }
-
-    private void updatePlayer() {
-        updateMovement();
-
-        Crowbar crowbar = survivalGameStateManager.collisionWithCrowbar(player.getCollisionBody());
-        if (crowbar != null) {
-            System.out.println("Crowbar get!");
-            survivalGameStateManager.removeCrowbar(crowbar);
-            crowbarsInInv++;
-            SoundControllerUtil.play(SoundFx.PICKUP);
-        }
     }
 
     private void updateMovement() {
@@ -135,6 +116,28 @@ public class PlayerController implements EntityController<Player> {
             player.setWorldX(potentialWorldX);
             player.setWorldY(potentialWorldY);
             setNode(levelManager, player);
+        }
+    }
+
+    private void checkCrowbarPickup() {
+        Crowbar crowbar = survivalGameStateManager.collisionWithCrowbar(player.getCollisionBody());
+        if (crowbar != null) {
+            System.out.println("Crowbar get!");
+            survivalGameStateManager.removeCrowbar(crowbar);
+            crowbarsInInv++;
+            SoundControllerUtil.play(SoundFx.PICKUP);
+        }
+    }
+
+    private void checkBatAttack() {
+        if (Key.SPACE.isPressed() && currentBatCooldownCount >= batCooldown) {
+            currentBatCooldownCount = 0;
+            survivalGameStateManager.processBatHit(player.getBatHitBox());
+            player.setCurrentBatIndex(0);
+        }
+
+        if (currentBatCooldownCount < batCooldown) {
+            currentBatCooldownCount++;
         }
     }
 }
