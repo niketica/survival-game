@@ -4,6 +4,7 @@ import nl.aniketic.survival.engine.display.DisplayManager;
 import nl.aniketic.survival.engine.gamestate.GameObject;
 import nl.aniketic.survival.engine.gamestate.GameStateManager;
 import nl.aniketic.survival.game.common.Direction;
+import nl.aniketic.survival.game.controls.Key;
 import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
 import nl.aniketic.survival.game.entity.Crowbar;
 import nl.aniketic.survival.game.entity.DoorObject;
@@ -12,6 +13,7 @@ import nl.aniketic.survival.game.entity.Zombie;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.MapLoader;
 import nl.aniketic.survival.game.level.Node;
+import nl.aniketic.survival.game.userinterface.UserInterface;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -25,6 +27,11 @@ public class SurvivalGameStateManager extends GameStateManager {
     private ZombieController zombieController;
     private DoorController doorController;
     private CrowbarController crowbarController;
+    private UserInterface userInterface;
+
+    private int userInputFrameCount = 10;
+    private int currentUserInputFrameCount = userInputFrameCount;
+    private boolean pause;
 
     @Override
     protected void startGameState() {
@@ -53,6 +60,9 @@ public class SurvivalGameStateManager extends GameStateManager {
         playerController = new PlayerController(this, levelManager);
         MapLoader.Entity player = entities.getPlayer();
         playerController.loadEntity(player.getWorldX(), player.getWorldY());
+
+        userInterface = new UserInterface(this);
+        userInterface.activate();
     }
 
     private LevelManager createLevelManager() {
@@ -66,6 +76,20 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     @Override
     protected void updatePreGameState() {
+        if (currentUserInputFrameCount < userInputFrameCount) {
+            currentUserInputFrameCount++;
+        } else {
+            if (Key.ESC.isPressed()) {
+                currentUserInputFrameCount = 0;
+                pause = !pause;
+                System.out.println("Pause = " + pause);
+            }
+        }
+
+        if (pause) {
+            return;
+        }
+
         playerController.update();
         zombieController.update();
 
@@ -76,6 +100,8 @@ public class SurvivalGameStateManager extends GameStateManager {
                 player.setCurrentHitPoints(player.getCurrentHitPoints() - 10);
             }
         });
+
+        userInterface.setNrOfCrowbars(playerController.getCrowbarsInInv());
     }
 
     @Override
@@ -113,8 +139,7 @@ public class SurvivalGameStateManager extends GameStateManager {
                 System.out.println("OUCH!");
                 zombie.setCurrentHitPoints(zombie.getCurrentHitPoints() - 50);
 
-                Direction knockbackDirection = getKnockbackDirection(batHitBox, zombie);
-                zombie.setKnockback(knockbackDirection);
+                zombie.setKnockback(playerController.getEntity().getDirection());
                 zombie.setMoving(false);
 
                 if (zombie.getCurrentHitPoints() <= 0) {
@@ -124,16 +149,6 @@ public class SurvivalGameStateManager extends GameStateManager {
         }
 
         zombiesToCleanup.forEach(zombie -> zombieController.removeEntity(zombie));
-    }
-
-    private Direction getKnockbackDirection(Rectangle batHitBox, Zombie zombie) {
-        Direction knockbackDirection;
-        if (batHitBox.x < zombie.getCollisionBody().x) {
-            knockbackDirection = Direction.RIGHT;
-        } else {
-            knockbackDirection = Direction.LEFT;
-        }
-        return knockbackDirection;
     }
 
     public DoorObject collisionWithDoor(Rectangle collisionBody) {
@@ -160,7 +175,11 @@ public class SurvivalGameStateManager extends GameStateManager {
         return null;
     }
 
-    public void removeCrowbar(Crowbar crowbar) {
+    public void crowbarPickedUp(Crowbar crowbar) {
         crowbarController.removeEntity(crowbar);
+    }
+
+    public boolean isPause() {
+        return pause;
     }
 }

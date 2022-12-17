@@ -123,9 +123,9 @@ public class PlayerController implements EntityController<Player> {
         Crowbar crowbar = survivalGameStateManager.collisionWithCrowbar(player.getCollisionBody());
         if (crowbar != null) {
             System.out.println("Crowbar get!");
-            survivalGameStateManager.removeCrowbar(crowbar);
             crowbarsInInv++;
             SoundControllerUtil.play(SoundFx.PICKUP);
+            survivalGameStateManager.crowbarPickedUp(crowbar);
         }
     }
 
@@ -139,5 +139,9 @@ public class PlayerController implements EntityController<Player> {
         if (currentBatCooldownCount < batCooldown) {
             currentBatCooldownCount++;
         }
+    }
+
+    public int getCrowbarsInInv() {
+        return crowbarsInInv;
     }
 }

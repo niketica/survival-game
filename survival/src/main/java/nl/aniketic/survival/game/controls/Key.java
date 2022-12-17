@@ -7,7 +7,8 @@ public enum Key {
     LEFT,
     RIGHT,
     DOWN,
-    SPACE;
+    SPACE,
+    ESC;
 
     private final KeyObserver keyObserver;
 

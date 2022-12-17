@@ -255,4 +255,8 @@ public class BaseEntity implements GameObject, PanelComponent {
     public Direction getKnockbackDirection() {
         return knockbackDirection;
     }
+
+    public Direction getDirection() {
+        return direction;
+    }
 }
