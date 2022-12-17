@@ -8,14 +8,15 @@
     <artifactId>survival-game</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <modules>
-        <module>engine</module>
-        <module>survival</module>
-    </modules>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <modules>
+        <module>engine</module>
+        <module>survival</module>
+        <module>map-editor</module>
+    </modules>
 </project>

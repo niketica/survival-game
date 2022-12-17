@@ -11,8 +11,6 @@ import nl.aniketic.survival.game.entity.Zombie;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.MapLoader;
 import nl.aniketic.survival.game.level.Node;
-import nl.aniketic.survival.game.sound.SoundControllerUtil;
-import nl.aniketic.survival.game.sound.SoundFx;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;

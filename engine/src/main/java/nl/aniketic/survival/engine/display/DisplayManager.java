@@ -2,6 +2,7 @@ package nl.aniketic.survival.engine.display;
 
 import javax.swing.JFrame;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 
 public final class DisplayManager {
 
@@ -29,6 +30,10 @@ public final class DisplayManager {
 
     public static void addKeyListener(KeyListener keyListener) {
         gamePanel.addKeyListener(keyListener);
+    }
+
+    public static void addMouseListener(MouseListener mouseListener) {
+        gamePanel.addMouseListener(mouseListener);
     }
 
     public static void clearGamePanel() {
