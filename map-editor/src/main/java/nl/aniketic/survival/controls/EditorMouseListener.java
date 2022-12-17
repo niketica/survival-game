@@ -82,10 +82,21 @@ public class EditorMouseListener implements MouseListener {
             clickedNode.setTileType(editorTile.getTileType());
         } else if (selectedItem instanceof EditorEntity) {
             EditorEntity editorEntity = (EditorEntity) selectedItem;
+            EntityValue entityValue = editorEntity.getEntity();
+
+            EditorEntity previousEntity = map.getEntities().stream()
+                    .filter(mapEntity -> mapEntity.getX() == clickedNode.getX() &&
+                            mapEntity.getY() == clickedNode.getY()).findAny().orElse(null);
+            if (previousEntity != null) {
+                map.removeEntity(previousEntity);
+            }
+
+            if (entityValue == EntityValue.RED_X) {
+                return;
+            }
 
             List<EditorEntity> mapEntities = map.getEntities();
-
-            if (editorEntity.getEntity() == EntityValue.PLAYER) {
+            if (entityValue == EntityValue.PLAYER) {
                 EditorEntity player = mapEntities.stream()
                         .filter(entity -> entity.getEntity() == EntityValue.PLAYER)
                         .findAny().orElse(null);
@@ -93,7 +104,7 @@ public class EditorMouseListener implements MouseListener {
             }
 
             EditorEntity newEditorEntity =
-                    new EditorEntity(clickedNode.getX(), clickedNode.getY(), editorEntity.getEntity());
+                    new EditorEntity(clickedNode.getX(), clickedNode.getY(), entityValue);
             newEditorEntity.setWorldX(clickedNode.getWorldX());
             newEditorEntity.setWorldY(clickedNode.getWorldY());
             map.addEntity(newEditorEntity);

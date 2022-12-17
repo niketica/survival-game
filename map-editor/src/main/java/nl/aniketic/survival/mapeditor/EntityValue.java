@@ -1,6 +1,7 @@
 package nl.aniketic.survival.mapeditor;
 
 public enum EntityValue {
+    RED_X("/ui/red_x.png"),
     PLAYER("/entity/soldier/soldier_1.png"),
     ZOMBIE("/entity/zombie/zombie_1.png"),
     DOOR("/entity/object/door.png"),
