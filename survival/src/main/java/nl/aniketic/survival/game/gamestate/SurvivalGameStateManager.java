@@ -32,6 +32,7 @@ public class SurvivalGameStateManager extends GameStateManager {
     private int userInputFrameCount = 10;
     private int currentUserInputFrameCount = userInputFrameCount;
     private boolean pause;
+    private boolean levelClear;
 
     @Override
     protected void startGameState() {
@@ -77,23 +78,25 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     @Override
     protected void updatePreGameState() {
+        levelClear = zombieController.getEntities().isEmpty();
+
         if (currentUserInputFrameCount < userInputFrameCount) {
             currentUserInputFrameCount++;
         } else {
-            if (Key.ESC.isPressed()) {
+            if (!levelClear && Key.ESC.isPressed()) {
                 currentUserInputFrameCount = 0;
                 pause = !pause;
                 System.out.println("Pause = " + pause);
             }
-            if (pause && Key.QUIT.isPressed()) {
+            if ((pause || levelClear) && Key.QUIT.isPressed()) {
                 System.exit(0);
             }
-            if (pause && Key.RESTART.isPressed()) {
+            if ((pause || levelClear) && Key.RESTART.isPressed()) {
                 restartGame();
             }
         }
 
-        if (pause) {
+        if (pause || levelClear) {
             return;
         }
 
@@ -202,5 +205,9 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     public boolean isPause() {
         return pause;
+    }
+
+    public boolean isLevelClear() {
+        return levelClear;
     }
 }
