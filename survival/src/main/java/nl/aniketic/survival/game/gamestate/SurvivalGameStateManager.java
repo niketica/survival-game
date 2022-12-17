@@ -4,6 +4,7 @@ import nl.aniketic.survival.engine.display.DisplayManager;
 import nl.aniketic.survival.engine.gamestate.GameObject;
 import nl.aniketic.survival.engine.gamestate.GameStateManager;
 import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
+import nl.aniketic.survival.game.entity.Crowbar;
 import nl.aniketic.survival.game.entity.DoorObject;
 import nl.aniketic.survival.game.entity.Player;
 import nl.aniketic.survival.game.entity.Zombie;
@@ -22,6 +23,7 @@ public class SurvivalGameStateManager extends GameStateManager {
     private ZombieController zombieController;
     private DoorController doorController;
     private KeyController keyController;
+    private CrowbarController crowbarController;
 
     @Override
     protected void startGameState() {
@@ -42,6 +44,9 @@ public class SurvivalGameStateManager extends GameStateManager {
 
         doorController = new DoorController(levelManager);
         entities.getDoors().forEach(door -> doorController.loadEntity(door.getWorldX(), door.getWorldY()));
+
+        crowbarController = new CrowbarController(levelManager);
+        entities.getCrowbars().forEach(crowbar -> crowbarController.loadEntity(crowbar.getWorldX(), crowbar.getWorldY()));
 
         zombieController = new ZombieController(this, levelManager);
         entities.getZombies().forEach(zombie -> zombieController.loadEntity(zombie.getWorldX(), zombie.getWorldY()));
@@ -92,6 +97,7 @@ public class SurvivalGameStateManager extends GameStateManager {
         keyController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
         doorController.getEntities().forEach(door -> door.setOffset(player.getWorldX(), player.getWorldY()));
         zombieController.getEntities().forEach(zombie -> zombie.setOffset(player.getWorldX(), player.getWorldY()));
+        crowbarController.getEntities().forEach(crowbar -> crowbar.setOffset(player.getWorldX(), player.getWorldY()));
         playerController.getEntity().setOffset(player.getWorldX(), player.getWorldY());
     }
 
@@ -117,13 +123,31 @@ public class SurvivalGameStateManager extends GameStateManager {
         zombiesToCleanup.forEach(zombie -> zombieController.removeEntity(zombie));
     }
 
-    public boolean collisionWithDoor(Rectangle collisionBody) {
+    public DoorObject collisionWithDoor(Rectangle collisionBody) {
         for (DoorObject door : doorController.getEntities()) {
             if (collisionBody.intersects(door.getCollisionBody())) {
-                return true;
+                return door;
             }
         }
 
-        return false;
+        return null;
+    }
+
+    public void removeDoor(DoorObject door) {
+        doorController.removeEntity(door);
+    }
+
+    public Crowbar collisionWithCrowbar(Rectangle collisionBody) {
+        for (Crowbar crowbar : crowbarController.getEntities()) {
+            if (collisionBody.intersects(crowbar.getCollisionBody())) {
+                return crowbar;
+            }
+        }
+
+        return null;
+    }
+
+    public void removeCrowbar(Crowbar crowbar) {
+        crowbarController.removeEntity(crowbar);
     }
 }

@@ -2,6 +2,8 @@ package nl.aniketic.survival.game.gamestate;
 
 import nl.aniketic.survival.game.common.Direction;
 import nl.aniketic.survival.game.controls.Key;
+import nl.aniketic.survival.game.entity.Crowbar;
+import nl.aniketic.survival.game.entity.DoorObject;
 import nl.aniketic.survival.game.entity.Player;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.Node;
@@ -18,6 +20,8 @@ public class PlayerController implements EntityController<Player> {
 
     private int batCooldown = 120;
     private int currentBatCooldownCount = batCooldown;
+
+    private int crowbarsInInv = 0;
 
     public PlayerController(SurvivalGameStateManager survivalGameStateManager,
                             LevelManager levelManager) {
@@ -66,6 +70,17 @@ public class PlayerController implements EntityController<Player> {
     }
 
     private void updatePlayer() {
+        updateMovement();
+
+        Crowbar crowbar = survivalGameStateManager.collisionWithCrowbar(player.getCollisionBody());
+        if (crowbar != null) {
+            System.out.println("Crowbar get!");
+            survivalGameStateManager.removeCrowbar(crowbar);
+            crowbarsInInv++;
+        }
+    }
+
+    private void updateMovement() {
         int potentialWorldX = player.getWorldX();
         int potentialWorldY = player.getWorldY();
         Rectangle collisionBody = player.getCollisionBody();
@@ -103,7 +118,14 @@ public class PlayerController implements EntityController<Player> {
         player.setMoving(moving);
 
         boolean collisionWithSolidNode = levelManager.isCollisionWithSolidNode(collisionBody);
-        boolean collisionWithDoor = survivalGameStateManager.collisionWithDoor(collisionBody);
+
+        DoorObject door = survivalGameStateManager.collisionWithDoor(collisionBody);
+        boolean collisionWithDoor = door != null;
+        if (door != null && crowbarsInInv > 0) {
+            crowbarsInInv--;
+            collisionWithDoor = false;
+            survivalGameStateManager.removeDoor(door);
+        }
 
         if (moving && !collisionWithSolidNode && !collisionWithDoor) {
             player.setWorldX(potentialWorldX);

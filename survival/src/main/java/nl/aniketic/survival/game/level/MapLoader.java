@@ -57,6 +57,7 @@ public class MapLoader {
         private Entity player;
         private List<Entity> zombies;
         private List<Entity> doors;
+        private List<Entity> crowbars;
 
         public Entity getPlayer() {
             return player;
@@ -86,6 +87,17 @@ public class MapLoader {
 
         public void setDoors(List<Entity> doors) {
             this.doors = doors;
+        }
+
+        public List<Entity> getCrowbars() {
+            if (crowbars == null) {
+                crowbars = new ArrayList<>();
+            }
+            return crowbars;
+        }
+
+        public void setCrowbars(List<Entity> crowbars) {
+            this.crowbars = crowbars;
         }
     }
 

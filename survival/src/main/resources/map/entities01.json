@@ -22,5 +22,11 @@
       "worldX": 8,
       "worldY": 28
     }
+  ],
+  "crowbars": [
+    {
+      "worldX": 6,
+      "worldY": 29
+    }
   ]
 }

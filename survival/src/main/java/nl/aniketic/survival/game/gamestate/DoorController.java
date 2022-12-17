@@ -38,8 +38,9 @@ public class DoorController implements EntityController<DoorObject> {
     }
 
     @Override
-    public void removeEntity(DoorObject entity) {
-
+    public void removeEntity(DoorObject door) {
+        door.deactivate();
+        doors.remove(door);
     }
 
     @Override
