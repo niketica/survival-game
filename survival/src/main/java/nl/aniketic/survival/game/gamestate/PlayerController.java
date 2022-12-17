@@ -79,6 +79,7 @@ public class PlayerController implements EntityController<Player> {
             System.out.println("Crowbar get!");
             survivalGameStateManager.removeCrowbar(crowbar);
             crowbarsInInv++;
+            SoundControllerUtil.play(SoundFx.PICKUP);
         }
     }
 
