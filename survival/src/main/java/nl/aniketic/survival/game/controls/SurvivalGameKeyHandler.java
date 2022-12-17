@@ -14,5 +14,6 @@ public class SurvivalGameKeyHandler extends KeyHandler {
         putKey(KeyEvent.VK_SPACE, Key.SPACE.getKeyObserver());
         putKey(KeyEvent.VK_ESCAPE, Key.ESC.getKeyObserver());
         putKey(KeyEvent.VK_Q, Key.QUIT.getKeyObserver());
+        putKey(KeyEvent.VK_R, Key.RESTART.getKeyObserver());
     }
 }

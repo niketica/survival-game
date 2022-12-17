@@ -60,7 +60,8 @@ public class UserInterface implements PanelComponent {
             g2.setFont(ARIAL_40);
             g2.drawString("PAUSED", SCREEN_WIDTH / 2 - 20, SCREEN_HEIGHT / 2);
             g2.drawString("Press ESC to resume game", SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 + 40);
-            g2.drawString("Press Q to exit game", SCREEN_WIDTH / 2 - 140, SCREEN_HEIGHT / 2 + 80);
+            g2.drawString("Press R to restart game", SCREEN_WIDTH / 2 - 140, SCREEN_HEIGHT / 2 + 80);
+            g2.drawString("Press Q to exit game", SCREEN_WIDTH / 2 - 140, SCREEN_HEIGHT / 2 + 120);
         }
     }
 

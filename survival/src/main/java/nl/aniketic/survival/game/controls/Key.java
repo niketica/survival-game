@@ -9,7 +9,8 @@ public enum Key {
     DOWN,
     SPACE,
     ESC,
-    QUIT;
+    QUIT,
+    RESTART;
 
     private final KeyObserver keyObserver;
 

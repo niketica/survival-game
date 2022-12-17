@@ -1,9 +1,9 @@
 package nl.aniketic.survival.game.gamestate;
 
 import nl.aniketic.survival.engine.display.DisplayManager;
+import nl.aniketic.survival.engine.display.PanelComponent;
 import nl.aniketic.survival.engine.gamestate.GameObject;
 import nl.aniketic.survival.engine.gamestate.GameStateManager;
-import nl.aniketic.survival.game.common.Direction;
 import nl.aniketic.survival.game.controls.Key;
 import nl.aniketic.survival.game.controls.SurvivalGameKeyHandler;
 import nl.aniketic.survival.game.entity.Crowbar;
@@ -41,6 +41,7 @@ public class SurvivalGameStateManager extends GameStateManager {
     }
 
     private void startNewGame() {
+        pause = false;
         levelManager = createLevelManager();
         MapLoader.Entities entities = MapLoader.loadEntities("maps/entities01.json");
         if (entities == null) {
@@ -87,6 +88,9 @@ public class SurvivalGameStateManager extends GameStateManager {
             if (pause && Key.QUIT.isPressed()) {
                 System.exit(0);
             }
+            if (pause && Key.RESTART.isPressed()) {
+                restartGame();
+            }
         }
 
         if (pause) {
@@ -105,6 +109,20 @@ public class SurvivalGameStateManager extends GameStateManager {
         });
 
         userInterface.setNrOfCrowbars(playerController.getCrowbarsInInv());
+    }
+
+    private void restartGame() {
+        levelManager.deactivate();
+        userInterface.deactivate();
+
+        playerController.getEntity().deactivate();
+        zombieController.getEntities().forEach(PanelComponent::deactivate);
+        doorController.getEntities().forEach(PanelComponent::deactivate);
+        crowbarController.getEntities().forEach(PanelComponent::deactivate);
+
+        gameObjects.clear();
+
+        startNewGame();
     }
 
     @Override

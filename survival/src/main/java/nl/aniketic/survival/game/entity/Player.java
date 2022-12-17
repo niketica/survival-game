@@ -23,7 +23,7 @@ public class Player extends BaseEntity {
         maxHitPoints = 100;
         currentHitPoints = maxHitPoints;
         currentBatIndex = 4;
-        batHitBox = new Rectangle(0, 0, 32, 44);
+        batHitBox = new Rectangle(0, 0, 40, 44);
     }
 
     private void loadPlayerFrames() {
