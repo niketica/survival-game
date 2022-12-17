@@ -1,0 +1,44 @@
+{
+  "player": {
+    "worldX": 8,
+    "worldY": 30
+  },
+  "zombies": [
+    {
+      "worldX": 43,
+      "worldY": 19
+    },
+    {
+      "worldX": 41,
+      "worldY": 17
+    },
+    {
+      "worldX": 43,
+      "worldY": 24
+    },
+    {
+      "worldX": 19,
+      "worldY": 31
+    },
+    {
+      "worldX": 17,
+      "worldY": 18
+    }
+  ],
+  "doors": [
+    {
+      "worldX": 8,
+      "worldY": 28
+    },
+    {
+      "worldX": 17,
+      "worldY": 28
+    }
+  ],
+  "crowbars": [
+    {
+      "worldX": 6,
+      "worldY": 29
+    }
+  ]
+}

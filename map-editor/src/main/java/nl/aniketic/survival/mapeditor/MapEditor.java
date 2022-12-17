@@ -28,7 +28,7 @@ public class MapEditor extends GameStateManager {
         TileImageManager tileImageManager = new TileImageManager();
 
         map = new Map(tileImageManager);
-        map.loadMap(10, 10);
+        map.loadMap();
         map.activate();
         gameObjects.add(map);
 
@@ -48,8 +48,7 @@ public class MapEditor extends GameStateManager {
                 if (button.getButtonValue() == ButtonValue.EXPORT) {
                     String stringMap = mapNodesToString();
                     try {
-                        String filePath = "C:\\ws\\git\\survival-game\\map-editor\\src\\main\\resources\\map\\map01.txt";
-                        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+                        BufferedWriter writer = new BufferedWriter(new FileWriter("maps/map01.txt"));
                         writer.write(stringMap);
                         writer.close();
                         System.out.println("Saved map!");

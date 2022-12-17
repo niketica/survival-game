@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,8 +25,8 @@ public class MapLoader {
     public static List<String> getMapLines(String filePath) {
         List<String> mapLines;
         try {
-            InputStream inputStream = MapLoader.class.getResourceAsStream(filePath);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            File file = new File(filePath);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             mapLines = bufferedReader.lines().collect(Collectors.toList());
             bufferedReader.close();
         } catch (IOException e) {
@@ -38,10 +37,10 @@ public class MapLoader {
 
     public static Entities loadEntities(String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
-        File file1 = new File(MapLoader.class.getResource(filePath).getFile());
+        File file = new File(filePath);
 
         try {
-            return objectMapper.readValue(file1, Entities.class);
+            return objectMapper.readValue(file, Entities.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

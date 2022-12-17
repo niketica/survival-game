@@ -33,7 +33,7 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     private void startNewGame() {
         levelManager = createLevelManager();
-        MapLoader.Entities entities = MapLoader.loadEntities("/map/entities01.json");
+        MapLoader.Entities entities = MapLoader.loadEntities("maps/entities01.json");
         if (entities == null) {
             throw new IllegalStateException("Could not load entities.");
         }
@@ -54,7 +54,7 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     private LevelManager createLevelManager() {
         LevelManager levelManager = new LevelManager();
-        int[][] map = MapLoader.loadMap("/map/map01.txt");
+        int[][] map = MapLoader.loadMap("maps/map01.txt");
         levelManager.setMap(map);
         levelManager.activate();
 

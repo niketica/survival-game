@@ -1,6 +1,5 @@
 package nl.aniketic.survival.mapeditor;
 
-import nl.aniketic.survival.controls.EditorKeyListener;
 import nl.aniketic.survival.controls.Key;
 import nl.aniketic.survival.engine.display.PanelComponent;
 import nl.aniketic.survival.engine.gamestate.GameObject;
@@ -35,8 +34,8 @@ public class Map implements PanelComponent, GameObject {
         nodes = new ArrayList<>();
     }
 
-    public void loadMap(int width, int height) {
-        int[][] map = MapLoader.loadMap("/map/map01.txt");
+    public void loadMap() {
+        int[][] map = MapLoader.loadMap("maps/map01.txt");
         for (int row = 0; row < map.length; row++) {
             for (int col = 0; col < map[0].length; col++) {
                 int mapValue = map[row][col];

@@ -126,10 +126,10 @@ public class UserInterface implements PanelComponent, GameObject {
         int height = button.getHeight();
         String text = button.getText();
 
-        g2.setColor(Color.GRAY);
-        g2.fillRect(x, y, width, height);
         g2.setColor(Color.DARK_GRAY);
-        g2.drawRect(x, y, width, height);
+        g2.fillRect(x, y, width, height);
+        g2.setColor(Color.GRAY);
+        g2.fillRect(x + 2, y + 2, width - 4, height - 4);
 
         g2.setFont(ARIAL_20);
         g2.setColor(Color.BLACK);
