@@ -13,6 +13,9 @@ import nl.aniketic.survival.game.entity.Zombie;
 import nl.aniketic.survival.game.level.LevelManager;
 import nl.aniketic.survival.game.level.MapLoader;
 import nl.aniketic.survival.game.level.Node;
+import nl.aniketic.survival.game.sound.SoundControllerUtil;
+import nl.aniketic.survival.game.sound.SoundFx;
+import nl.aniketic.survival.game.sound.SoundLoop;
 import nl.aniketic.survival.game.userinterface.UserInterface;
 
 import java.awt.Rectangle;
@@ -65,6 +68,8 @@ public class SurvivalGameStateManager extends GameStateManager {
 
         userInterface = new UserInterface(this);
         userInterface.activate();
+
+        SoundControllerUtil.loop(SoundLoop.SPOOKY);
     }
 
     private LevelManager createLevelManager() {
@@ -115,6 +120,7 @@ public class SurvivalGameStateManager extends GameStateManager {
     }
 
     private void restartGame() {
+        SoundControllerUtil.stop(SoundLoop.SPOOKY);
         levelManager.deactivate();
         userInterface.deactivate();
 
@@ -154,6 +160,7 @@ public class SurvivalGameStateManager extends GameStateManager {
     }
 
     public void processBatHit(Rectangle batHitBox) {
+        SoundControllerUtil.play(SoundFx.BAT_ATTACK);
         System.out.println("WACK!");
         List<Zombie> zombiesToCleanup = new ArrayList<>();
 
@@ -161,6 +168,7 @@ public class SurvivalGameStateManager extends GameStateManager {
                 .collect(Collectors.toList())) {
             if (batHitBox.intersects(zombie.getCollisionBody())) {
                 System.out.println("OUCH!");
+                SoundControllerUtil.play(SoundFx.ZOMBIE_HIT);
                 zombie.setCurrentHitPoints(zombie.getCurrentHitPoints() - 50);
 
                 zombie.setKnockback(playerController.getEntity().getDirection());

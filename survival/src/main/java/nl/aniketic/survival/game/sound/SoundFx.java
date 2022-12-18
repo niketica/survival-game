@@ -4,7 +4,9 @@ import nl.aniketic.survival.engine.sound.Sound;
 
 public enum SoundFx {
     DOOR("/sound/fx/door.wav"),
-    PICKUP("/sound/fx/pickup.wav");
+    PICKUP("/sound/fx/pickup.wav"),
+    BAT_ATTACK("/sound/fx/bat_attack.wav"),
+    ZOMBIE_HIT("/sound/fx/zombie_hit.wav");
 
     private final Sound sound;
 

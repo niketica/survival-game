@@ -9,4 +9,16 @@ public class SoundControllerUtil {
         sound.loadClip();
         sound.play();
     }
+
+    public static void loop(SoundLoop soundLoop) {
+        Sound sound = soundLoop.getSound();
+        sound.loadClip();
+        sound.setVolume(-20);
+        sound.loop();
+    }
+
+    public static void stop(SoundLoop soundLoop) {
+        Sound sound = soundLoop.getSound();
+        sound.stop();
+    }
 }

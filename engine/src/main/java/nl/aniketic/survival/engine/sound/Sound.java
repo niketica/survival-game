@@ -3,6 +3,7 @@ package nl.aniketic.survival.engine.sound;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import java.net.URL;
 
 public class Sound {
@@ -41,5 +42,10 @@ public class Sound {
 
     public boolean isRunning() {
         return clip != null && clip.isRunning();
+    }
+
+    public void setVolume(float volumeValue) {
+        FloatControl floatControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        floatControl.setValue(volumeValue);
     }
 }
