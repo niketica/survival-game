@@ -40,6 +40,7 @@ public class UserInterface implements PanelComponent {
         paintCrowbarInInv(g2);
         drawPaused(g2);
         drawLevelClear(g2);
+        drawGameOver(g2);
     }
 
     private void paintCrowbarInInv(Graphics2D g2) {
@@ -71,6 +72,16 @@ public class UserInterface implements PanelComponent {
             g2.setColor(Color.WHITE);
             g2.setFont(ARIAL_40);
             g2.drawString("LEVEL CLEARED!", SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2);
+            g2.drawString("Press R to restart game", SCREEN_WIDTH / 2 - 140, SCREEN_HEIGHT / 2 + 40);
+            g2.drawString("Press Q to exit game", SCREEN_WIDTH / 2 - 120, SCREEN_HEIGHT / 2 + 80);
+        }
+    }
+
+    private void drawGameOver(Graphics2D g2) {
+        if (survivalGameStateManager.isGameOver()) {
+            g2.setColor(Color.WHITE);
+            g2.setFont(ARIAL_40);
+            g2.drawString("YOU DIED!", SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2);
             g2.drawString("Press R to restart game", SCREEN_WIDTH / 2 - 140, SCREEN_HEIGHT / 2 + 40);
             g2.drawString("Press Q to exit game", SCREEN_WIDTH / 2 - 120, SCREEN_HEIGHT / 2 + 80);
         }

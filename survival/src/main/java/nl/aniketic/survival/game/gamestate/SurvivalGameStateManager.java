@@ -36,6 +36,7 @@ public class SurvivalGameStateManager extends GameStateManager {
     private int currentUserInputFrameCount = userInputFrameCount;
     private boolean pause;
     private boolean levelClear;
+    private boolean gameOver;
 
     @Override
     protected void startGameState() {
@@ -46,6 +47,9 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     private void startNewGame() {
         pause = false;
+        levelClear = false;
+        gameOver = false;
+
         levelManager = createLevelManager();
         MapLoader.Entities entities = MapLoader.loadEntities("maps/entities01.json");
         if (entities == null) {
@@ -88,20 +92,20 @@ public class SurvivalGameStateManager extends GameStateManager {
         if (currentUserInputFrameCount < userInputFrameCount) {
             currentUserInputFrameCount++;
         } else {
-            if (!levelClear && Key.ESC.isPressed()) {
+            if ((!gameOver || !levelClear) && Key.ESC.isPressed()) {
                 currentUserInputFrameCount = 0;
                 pause = !pause;
                 System.out.println("Pause = " + pause);
             }
-            if ((pause || levelClear) && Key.QUIT.isPressed()) {
+            if ((pause || levelClear || gameOver) && Key.QUIT.isPressed()) {
                 System.exit(0);
             }
-            if ((pause || levelClear) && Key.RESTART.isPressed()) {
+            if ((pause || levelClear || gameOver) && Key.RESTART.isPressed()) {
                 restartGame();
             }
         }
 
-        if (pause || levelClear) {
+        if (pause || levelClear || gameOver) {
             return;
         }
 
@@ -112,7 +116,10 @@ public class SurvivalGameStateManager extends GameStateManager {
 
         zombieController.getEntities().forEach(zombie -> {
             if (player.getCollisionBody().intersects(zombie.getCollisionBody())) {
-                player.setCurrentHitPoints(player.getCurrentHitPoints() - 10);
+                player.setCurrentHitPoints(player.getCurrentHitPoints() - 25);
+                if (player.getCurrentHitPoints() <= 0) {
+                    gameOver = true;
+                }
             }
         });
 
@@ -217,5 +224,9 @@ public class SurvivalGameStateManager extends GameStateManager {
 
     public boolean isLevelClear() {
         return levelClear;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 }
