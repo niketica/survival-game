@@ -5,6 +5,8 @@ import nl.aniketic.survival.engine.gamestate.GameObject;
 import nl.aniketic.survival.game.common.Direction;
 import nl.aniketic.survival.game.common.ImageUtil;
 import nl.aniketic.survival.game.level.Node;
+import nl.aniketic.survival.game.sound.SoundControllerUtil;
+import nl.aniketic.survival.game.sound.SoundFx;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -220,6 +222,7 @@ public class BaseEntity implements GameObject, PanelComponent {
         if (currentIFrameCount >= iFrames) {
             this.currentHitPoints = hitPoints;
             currentIFrameCount = 0;
+            SoundControllerUtil.play(SoundFx.PLAYER_HIT);
         }
     }
 

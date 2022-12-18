@@ -119,6 +119,10 @@ public class SurvivalGameStateManager extends GameStateManager {
                 player.setCurrentHitPoints(player.getCurrentHitPoints() - 25);
                 if (player.getCurrentHitPoints() <= 0) {
                     gameOver = true;
+                    SoundControllerUtil.stop(SoundLoop.SPOOKY);
+                    SoundControllerUtil.play(SoundFx.GAME_OVER);
+                    player.deactivate();
+                    gameObjects.remove(player);
                 }
             }
         });
